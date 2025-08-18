@@ -1,0 +1,46 @@
+local requests = require("requests")
+local html = require("htmlparser")
+local json = require("cjson")
+io.write("Enter a shortcode: ")
+
+local input_shortcode = io.read()
+
+
+
+-- okay, so instagram uses some deeply fucked json, this function is to check if a deeply nested field exists.
+local function check_nested_field(tbl, ...)
+    local current = tbl
+    for _, key in ipairs({...}) do
+        if type(current) ~= "table" then
+            return nil 
+        end
+        current = current[key]
+    end
+    return current 
+end
+
+-- insta checks these headers on post pages to make sure you're human. Only these seemingly.
+local totally_human_headers = {
+    ["Accept"] =  "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    ["Sec-Fetch-Mode"] = "navigate"
+}
+
+
+local post_request = requests.get("https://instagram.com/p/" .. input_shortcode, {
+    headers = totally_human_headers
+})
+
+local html_root = html.parse(post_request.body)
+local script_elements = html_root:select("[type='application/json']")
+
+for _, element in pairs(script_elements) do
+    local element_json = json.decode(element:getcontent())
+
+    if check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__shortcode__web_info") then
+        local post_info = element_json.require[1][4][1].__bbox.require[1][4][2].__bbox.result.data.xdt_api__v1__media__shortcode__web_info.items[1]
+        print("Post Shortcode:\t" .. post_info.code)
+        print("Post Caption:\t" .. post_info.caption.text)
+        print("Image URI:\t" .. post_info.image_versions2.candidates[1].url)
+    end
+end
+
