@@ -1,0 +1,64 @@
+<% -- this is definitely _not_ how you're supposed to do this, but sending the function on self doesn't work in a really weird way
+    local util = require("lapis.util") 
+    local json = require("cjson")
+    local proxy_url = function(url)
+        return "/mediaproxy?url=" .. util.escape(url)
+    end 
+%>
+<main id="main">
+    <div class="user-info-card user-info">
+        <div class="profile-picture">
+            <img src="<%= proxy_url(user.user.profile_pic_url) %>">
+        </div>
+        <div class="usernames" >
+            <p> <%= user.user.full_name %> </p>
+            <p> <%= user.user.username %> </p>
+        </div>
+        <div class="user-bio">
+            <p> <%= user.user.biography %> </p>
+        </div>
+    </div>
+
+    <div class="user-posts">
+        <h2> Posts </h2>
+        <% for _, post in ipairs(posts) do %>
+            <% post = post.node %>
+            
+            <div class="post">
+                <div class="user-info">
+                    <img src="<%= proxy_url(post.user.profile_pic_url) %>">
+                    <a href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
+                </div>
+                <div class="post-image">
+                    <% if type(post.video_versions) == "table" then %>
+                        <video controls>
+                            <source src="<%= proxy_url(post.video_versions[1].url) %>"> 
+                        </video>
+                    <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
+                        <div class="carousel">
+                            <% for _, image in ipairs(post.carousel_media) do %>
+                                <img src="<%= proxy_url(image.display_uri) %>">
+                            <% end %>
+                        </div>
+                    <% elseif type(post.image_versions2) == "table" then %>
+                        <img src="<%= post.image_versions2.candidates[1].url %>" style="max-height: 35em;">
+                    <% end %>
+                </div>
+                <div class="post-body">
+                    <div class="caption">  
+                        <% if type(post.caption) == "table" then %>
+                            <%= post.caption.text %>
+                        <% end %>
+                    </div>
+            
+                </div>
+                <a href="<%= "/p/" .. post.code %>"> <%= post.comment_count %> Comments</a>
+            </div>
+        <% end %>
+    </div>
+
+
+    <div class="next-button">
+        <a href="<%= "?after=" .. end_cursor %>">Next Page</a>
+    </div>
+</main>
