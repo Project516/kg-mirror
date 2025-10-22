@@ -1,22 +1,15 @@
 local http = require("resty.http")
 local html = require("htmlparser")
 local json = require("cjson")
+local helpers = require("lib.helpers")
+
 
 local totally_human_headers = {
     ["Accept"] =  "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     ["Sec-Fetch-Mode"] = "navigate"
 }
 
-local function check_nested_field(tbl, ...)
-    local current = tbl
-    for _, key in ipairs({...}) do
-        if type(current) ~= "table" then
-            return nil 
-        end
-        current = current[key]
-    end
-    return current 
-end
+
 
 local function get_post(shortcode)
     local httpc = http.new()
@@ -39,14 +32,14 @@ local function get_post(shortcode)
         local element_json = json.decode(element:getcontent())
         
         
-        if check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__shortcode__web_info") then
+        if helpers.check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__shortcode__web_info") then
             -- instagram's json structure is fucked.
             post_info = element_json.require[1][4][1].__bbox.require[1][4][2].__bbox.result.data.xdt_api__v1__media__shortcode__web_info.items[1]     
         end
 
         
 
-        if check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__media_id__comments__connection", "edges") then
+        if helpers.check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__media_id__comments__connection", "edges") then
             post_comments = element_json.require[1][4][1].__bbox.require[1][4][2].__bbox.result.data.xdt_api__v1__media__media_id__comments__connection.edges
         end
         

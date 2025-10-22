@@ -1,6 +1,7 @@
 local http = require("resty.http")
 local json = require("cjson")
 local util = require("lapis.util")
+local helpers = require("lib.helpers")
 
 
 local doc_id = "24644030398570558"
@@ -11,16 +12,7 @@ local instagram_headers = {
     ["Accept"] =  "*/*"
 }
 
-local function check_nested_field(tbl, ...)
-    local current = tbl
-    for _, key in ipairs({...}) do
-        if type(current) ~= "table" then
-            return nil 
-        end
-        current = current[key]
-    end
-    return current 
-end
+
 
 local function get_user_info_api(username)
     local start_uri = "https://www.instagram.com/api/v1/users/web_profile_info/?username="
@@ -30,7 +22,7 @@ local function get_user_info_api(username)
         headers = instagram_headers
     })
 
-    if check_nested_field(json.decode(user_request.body), "data", "user") then
+    if helpers.check_nested_field(json.decode(user_request.body), "data", "user") then
         return json.decode(user_request.body).data.user  
     else
         return json.decode(user_request.body)

@@ -6,13 +6,14 @@ body {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-
+    
 }
 
 
 .user-info img {
     max-height: 2.5em;
     border-radius: 0.2em;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
 
 
@@ -51,6 +52,7 @@ body {
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 1em;
+    
 }
 
 
@@ -78,7 +80,7 @@ body {
 .carousel {
     overflow: auto;
     min-width: 30em;
-    max-width: 50em;
+    max-width: 40em;
 }
 
 .comments {
@@ -101,13 +103,15 @@ body {
 
 
 nav img {
-    max-height: 4em;
+    max-height: 3em;
     
 }
 
 nav {
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     margin-bottom: 2em;
+    max-height: 3em;
+    
 }
 
 .user-info-card {
@@ -117,6 +121,32 @@ nav {
     padding: 3%;
     
 }
+
+.next-button {
+    padding: 0.5em;
+    
+    width: 6em;
+    margin: 0 auto;
+    margin-bottom: 4em;
+    border: 1em;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.next-button a {
+    color: black;
+    text-decoration: none;
+    
+    display: inline;
+    text-align: center;
+    
+}
+
+.next-button:hover {
+    background-color: #D4D3D4;
+    text-decoration: underline;
+}
+
+
 
 @media only screen and (max-width: 850px)  {
     .post-image {

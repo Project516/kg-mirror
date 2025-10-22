@@ -1,10 +1,5 @@
-<% -- this is definitely _not_ how you're supposed to do this, but sending the function on self doesn't work in a really weird way
-    local util = require("lapis.util") 
-    local json = require("cjson")
-    local proxy_url = function(url)
-        return "/mediaproxy?url=" .. util.escape(url)
-    end 
-%>
+<% local proxy_url = require("lib.helpers").proxy_url %>
+
 <main id="main">
     <div class="user-info-card user-info">
         <div class="profile-picture">

@@ -1,3 +1,5 @@
+local util = require("lapis.util") 
+
 local function check_nested_field(tbl, ...)
     local current = tbl
     for _, key in ipairs({...}) do
@@ -9,4 +11,10 @@ local function check_nested_field(tbl, ...)
     return current 
 end
 
-return { check_nested_field = check_nested_field }
+
+    
+local proxy_url = function(url)
+    return "/mediaproxy?url=" .. util.escape(url)
+end 
+
+return { check_nested_field = check_nested_field, proxy_url = proxy_url }
