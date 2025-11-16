@@ -11,7 +11,7 @@ app.layout = require("views.layout")
 local get_post = require("lib.get_post")
 local get_user_info = require("lib.get_user_info")
 local get_user_posts = require("lib.get_user_posts")
-
+local search = require("lib.search")
 
 
 -- welcome to the soup
@@ -130,5 +130,20 @@ app:get("/:username", function(self)
   return { render =  "user" }
 end)
 
+app:get("/search", function(self)
+  if self.params.q then
+
+    local search_results = search(self.params.q)
+
+    self.search_query = self.params.q
+    self.search_results = search_results
+
+    --return { json = search_results }
+    return { render = "search_results" }
+  else
+    return { render = "search"}
+  end
+
+end)
 
 return app

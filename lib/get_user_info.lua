@@ -1,3 +1,4 @@
+local instagram_graphql_request = require("lib.send_instagram_graphql_request")
 local http = require("resty.http")
 local json = require("cjson")
 local util = require("lapis.util")
@@ -5,6 +6,7 @@ local helpers = require("lib.helpers")
 
 
 local doc_id = "24644030398570558"
+
 local instagram_headers = {
     ["X-IG-App-ID"] = "936619743392459", -- TODO: let this be configurable
     ["X-CSRFToken"] = "exampletexthere", -- this can be anything.  TODO: probably should make it configurable as well
@@ -30,10 +32,7 @@ local function get_user_info_api(username)
 end
 
 local function get_user_info_graphql(userid)
-    local graphql_uri = "https://instagram.com/graphql/query"
-    local httpc = http.new()
-
-    local request_body = "variables=" .. util.escape(json.encode({
+    local payload = {
         enable_integrity_filters = true,
         id = userid,
         render_surface = "PROFILE",
@@ -42,18 +41,12 @@ local function get_user_info_graphql(userid)
         __relay_internal__pv__PolarisProjectCannesLoggedOutEnabledrelayprovider = false,
         __relay_internal__pv__PolarisCannesGuardianExperienceEnabledrelayprovider =  false,
         __relay_internal__pv__PolarisCASB976ProfileEnabledrelayprovider = false
-    })) .. "&doc_id=" .. doc_id
+    }
 
 
-    local user_info_request = httpc:request_uri(graphql_uri, {
-        method = "POST",
-        headers = instagram_headers,
-        body = request_body
-    })
+    local user_info = instagram_graphql_request(payload, doc_id)
 
-    ngx.log(ngx.ERR, request_body .. "\n\n" .. user_info_request.body)
-
-    return json.decode(user_info_request.body)
+    return user_info
 end
 
 

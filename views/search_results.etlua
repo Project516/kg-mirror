@@ -1,0 +1,32 @@
+<%
+    local proxy_url = require("lib.helpers").proxy_url
+    local util = require("lapis.util")
+    local json = require("cjson")
+%>
+
+<main id="main">
+    <h2 class="search-results-heading">Search results for <%= search_query %> </h2>
+    <% if #search_results.users > 0 then %>
+        <h3 class="search-results-heading">Users</h3>
+        <% for _, user in ipairs(search_results.users) do %>
+            <% user = user.user %>
+            <div class="user-info item-card search-result">
+                <img src="<%= proxy_url(user.profile_pic_url) %>">
+                <a class="username" href="<%= "/" .. user.username %>"> <%= user.username %> </a>
+            </div>
+        <% end %>
+    <% end %>
+    <% if #search_results.hashtags > 0 then %>
+        <h3 class="search-results-heading">Hashtags</h3>
+        <% for _, hashtag in ipairs(search_results.hashtags) do %>
+            <% hashtag = hashtag.hashtag %>
+            <div class="item-card search-result">
+                <p><%= hashtag.name %> -- <%= hashtag.search_result_subtitle %> </p>
+            </div>
+        <% end %>
+        <!-- I'll add better support for hashtags later. -->
+    <% end %>
+</main>
+
+
+

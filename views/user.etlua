@@ -1,7 +1,7 @@
 <% local proxy_url = require("lib.helpers").proxy_url %>
 
 <main id="main">
-    <div class="user-info-card user-info">
+    <div class="item-card user-info">
         <div class="profile-picture">
             <img src="<%= proxy_url(user.user.profile_pic_url) %>">
         </div>
@@ -22,7 +22,7 @@
             <div class="post">
                 <div class="user-info">
                     <img src="<%= proxy_url(post.user.profile_pic_url) %>">
-                    <a href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
+                    <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
                 </div>
                 <div class="post-image">
                     <% if type(post.video_versions) == "table" then %>

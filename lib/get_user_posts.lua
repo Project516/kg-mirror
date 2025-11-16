@@ -1,19 +1,9 @@
-local http = require("resty.http")
-local util = require("lapis.util")
+local instagram_graphql_request = require("lib.send_instagram_graphql_request")
 local json = require("cjson")
-
-
-local instagram_headers = {
-    ["X-IG-App-ID"] = "936619743392459", -- TODO: let this be configurable
-    ["X-CSRFToken"] = "exampletexthere", -- this can be anything.  TODO: probably should make it configurable as well
-    ["Content-Type"] =  "application/x-www-form-urlencoded",
-    ["Accept"] =  "*/*"
-}
 
 local doc_id = "23893796620241262"
 
 local function get_user_posts(username, cursor)
-    local httpc = http.new()
     -- setup the request body
 
     local after_cursor = false
@@ -23,9 +13,8 @@ local function get_user_posts(username, cursor)
         after_cursor = json.null
     end
 
-
-    local request_body = "variables=" .. util.escape(json.encode({
-        after = after_cursor, 
+    local payload = {
+        after = after_cursor,
         before = json.null, -- nil is so counter-inituative.
         data = {
             count = 20,
@@ -39,19 +28,17 @@ local function get_user_posts(username, cursor)
         username = username,
         __relay_internal__pv__PolarisIsLoggedInrelayprovider = true, -- no idea what this does either
         __relay_internal__pv__PolarisShareSheetV3relayprovider = true
-    })) .. "&doc_id=" .. doc_id
+    }
 
-    
-    local posts_request = httpc:request_uri("https://www.instagram.com/graphql/query", {
-        method = "POST",
-        headers = instagram_headers,
-        body = request_body,
-    })
+    local posts_request = instagram_graphql_request(payload, doc_id)
 
-    local posts = json.decode(posts_request.body).data.xdt_api__v1__feed__user_timeline_graphql_connection.edges
-    local end_cursor = json.decode(posts_request.body).data.xdt_api__v1__feed__user_timeline_graphql_connection.page_info.end_cursor
+    local posts = posts_request.data
+                      .xdt_api__v1__feed__user_timeline_graphql_connection.edges
+    local end_cursor = posts_request.data
+                           .xdt_api__v1__feed__user_timeline_graphql_connection
+                           .page_info.end_cursor
 
-    return { posts = posts, end_cursor = end_cursor }
+    return {posts = posts, end_cursor = end_cursor}
 end
 
 return get_user_posts
