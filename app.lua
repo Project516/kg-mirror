@@ -41,7 +41,7 @@ app:get("/p/:shortcode", function(self)
   local post = get_post(self.params.shortcode)
   self.post = post.post -- heh
   self.comments = post.comments
-  self.page_title = "A post by " ..  post.post.user.username 
+  self.page_title = "A post by " ..  post.post.user.username
   if self.params.json == "true" then
     return { json = post }
   end
@@ -134,13 +134,14 @@ app:get("/search", function(self)
   if self.params.q then
 
     local search_results = search(self.params.q)
-
+    self.page_title = "Search for \"" .. self.params.q .. "\" | kittygram"
     self.search_query = self.params.q
     self.search_results = search_results
 
     --return { json = search_results }
     return { render = "search_results" }
   else
+    self.page_title = "Search | kittygram"
     return { render = "search"}
   end
 

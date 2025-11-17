@@ -43,6 +43,9 @@
                         <a class="username" href="<%= "/" .. comment.user.username %>"> <%= comment.user.username %> </a>
                     </header>
                     <p> <%= comment.text %> </p>
+                    <% if type(comment.giphy_media_info) == "table" then %>
+                        <img src="<%= proxy_url(comment.giphy_media_info.first_party_cdn_proxied_images.fixed_height.url) %>">
+                    <% end %>
                 </article>
             <% end %>
             <hr>
