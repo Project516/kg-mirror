@@ -39,13 +39,21 @@ end)
 
 app:get("/p/:shortcode", function(self)
   local post = get_post(self.params.shortcode)
-  self.post = post.post -- heh
-  self.comments = post.comments
-  self.page_title = "A post by " ..  post.post.user.username
-  if self.params.json == "true" then
-    return { json = post }
+
+  if post.post.has_error == true then
+    self.error = post.post
+    self.page_title = "Not Found | Kittygram"
+    return { status = 404, render = "404" }
+  else
+    self.post = post.post -- heh
+    self.comments = post.comments
+    self.page_title = "A post by " ..  post.post.user.username
+
+    if self.params.json == "true" then
+      return { json = post }
+    end
+    return { render = "post" }
   end
-  return { render = "post" }
 end)
 
 -- is there a way to do an <or> thing in a route? either way, this does the exact same thing as the /p/ route.
@@ -53,13 +61,20 @@ end)
 
 app:get("/:username/reel/:shortcode", function(self)
   local post = get_post(self.params.shortcode)
-  self.post = post.post -- heh
-  self.comments = post.comments
-  self.page_title = "A post by " ..  post.post.user.username 
-  if self.params.json == "true" then
-    return { json = post }
+  if post.post.has_error == true then
+    self.error = post.post
+    self.page_title = "Not Found | Kittygram"
+    return { status = 404, render = "404" }
+  else
+    self.post = post.post -- heh
+    self.comments = post.comments
+    self.page_title = "A post by " ..  post.post.user.username
+
+    if self.params.json == "true" then
+      return { json = post }
+    end
+    return { render = "post" }
   end
-  return { render = "post" }
 end)
 
 

@@ -45,11 +45,23 @@ local function get_post(shortcode)
         
     end
     if not post_info then  -- did you know I'm terrible at coding?
-        post_info = { error = "Post info not found in page HTML.", req = post_request }
+        post_info = {
+            has_error = true,
+            error_info = {
+                message = "No post data json was found in the page's HTML.",
+                blob = post_info
+            }
+        }
     end
 
     if not post_comments  then
-        post_comments = { error = "Post comments not found in page HTML", req = post_request }
+        post_comments = {
+            has_error = true,
+            error_info = {
+                message = "Post comments not found in page HTML",
+                blob = post_comments
+            }
+        }
     end
 
     return { post = post_info, comments = post_comments }
