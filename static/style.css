@@ -114,6 +114,31 @@ nav {
     
 }
 
+.right-navbar-items {
+    float: right;
+
+    list-style-type: none;
+    display: inline-block;
+    margin-top: 0;
+    padding-top: 0.2em;
+    margin-right: 0.5em;
+}
+
+.right-navbar-items li {
+    display: inline;
+}
+
+.right-navbar-items li img {
+    max-height: 2.5em;
+    border-radius: 0.3em;
+    padding: 0.1em;
+}
+
+.right-navbar-items li img:hover {
+    background-color: #D4D3D4;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
 .item-card {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin: 0 auto;

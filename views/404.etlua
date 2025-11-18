@@ -3,7 +3,6 @@
         <h2> Not Found. </h2>
         <p>The requested post was not found. Your link could be broken, or the post may have been deleted.</p>
         <br>
-
         <details>
             <summary>More Details</summary>
             <p> <%= error.error_info.message %> </p>

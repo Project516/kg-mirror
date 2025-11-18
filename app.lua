@@ -17,6 +17,9 @@ local search = require("lib.search")
 -- welcome to the soup
 
 
+app:before_filter(function(self)
+    self.view_on_instagram_link = "https://www.instagram.com" .. self.req.parsed_url.path
+end)
 --todo: replace this with a proper page
 app:get("/", function(self)
     
