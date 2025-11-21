@@ -1,0 +1,15 @@
+fastcgi_temp/
+nginx.conf.compiled
+proxy_temp/
+scgi_temp/
+logs/
+uwsgi_temp/
+client_body_temp/
+
+*.kate-swp
+
+kittygram-dev-1.rockspec
+/luarocks
+/lua
+/lua_modules
+/.luarocks
