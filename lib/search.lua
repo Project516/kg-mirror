@@ -16,16 +16,24 @@ local function search(query)
 
     if search_results.errors then
         return {
-            errors = true,
-            errors_info = json.encode(search_results)
+            has_errors = true,
+            error_type = "unknown",
+            errors_info = {
+                message = "An unknown error occurred.",
+                blob = json.encode(search_results)
+            }
         }
     elseif helpers.check_nested_field(search_results, "data", "xdt_api__v1__fbsearch__topsearch_connection") then
         return search_results.data.xdt_api__v1__fbsearch__topsearch_connection
     end
 
     return {
-        errors = true,
-        errors_info = "Something went wrong."
+        has_errors = true,
+        error_type = "unknown",
+        error_info = {
+            message = "Something went wrong.",
+            blob = json.encode(search_results.data)
+        }
     }
 end
 

@@ -10,7 +10,7 @@
             <p> <%= user.user.username %> </p>
         </div>
         <div class="user-bio">
-            <p> <%= user.user.biography %> </p>
+            <p class="user-bio-text"><%= user.user.biography %></p>
         </div>
     </div>
 
@@ -42,7 +42,7 @@
                 <div class="post-body">
                     <div class="caption">  
                         <% if type(post.caption) == "table" then %>
-                            <%= post.caption.text %>
+                            <p class="post-caption-text"><%= post.caption.text %></p>
                         <% end %>
                     </div>
             
