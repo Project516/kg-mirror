@@ -12,6 +12,6 @@ RUN /usr/local/openresty/luajit/bin/luarocks install lua-cjson
 RUN /usr/local/openresty/luajit/bin/luarocks install htmlparser
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["lapis", "serve", "production"]
