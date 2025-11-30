@@ -1,72 +1,45 @@
-local http = require("resty.http")
-local html = require("htmlparser")
 local json = require("cjson")
-local helpers = require("lib.helpers")
-
-
-local totally_human_headers = {
-    ["Accept"] =  "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    ["Sec-Fetch-Mode"] = "navigate"
-}
+local graphql_request = require("lib.send_instagram_graphql_request")
 
 
 
-local function get_post(shortcode)
-    local httpc = http.new()
-    
-    local post_request, err = httpc:request_uri("https://www.instagram.com/p/" .. shortcode .. "/", {
-        headers = totally_human_headers
-    })
+local doc_id = "8845758582119845"
 
-    
-    if not post_request then
-        ngx.log(ngx.ERR, "Request failed: " .. err)
-    end
-    local html_root = html.parse(post_request.body)
-    local script_elements = html_root:select("[type='application/json']")
 
-    local post_info = false
-    local post_comments = false
+local function get_post_graphql(shortcode)
+    local payload = {
+        shortcode = shortcode,
+        fetch_tagged_user_count = json.null,
+        hoisted_comment_id = json.null,
+        hoisted_reply_id = json.null
+    }
 
-    for _, element in pairs(script_elements) do
-        local element_json = json.decode(element:getcontent())
-        
-        
-        if helpers.check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__shortcode__web_info") then
-            -- instagram's json structure is fucked.
-            post_info = element_json.require[1][4][1].__bbox.require[1][4][2].__bbox.result.data.xdt_api__v1__media__shortcode__web_info.items[1]     
-        end
+    local post = graphql_request(payload, doc_id)
 
-        
-
-        if helpers.check_nested_field(element_json, "require", 1, 4, 1, "__bbox", "require", 1, 4, 2, "__bbox", "result", "data", "xdt_api__v1__media__media_id__comments__connection", "edges") then
-            post_comments = element_json.require[1][4][1].__bbox.require[1][4][2].__bbox.result.data.xdt_api__v1__media__media_id__comments__connection.edges
-        end
-        
-    end
-    if not post_info then
-        post_info = {
+    if post.data and post.data.xdt_shortcode_media == json.null then
+        return {
             has_error = true,
             error_type = "not_found",
             error_info = {
-                message = "No post data json was found in the page's HTML.",
-                blob = post_info
+                message = "Post not found.",
+                blob = json.encode(post)
+            }
+        }
+    elseif post.status == "fail" and post.require_login == true then
+        return {
+            has_errors = true,
+            error_type = "ratelimited",
+            error_info = {
+                message = "This instance may be rate-limited. Try again in a minute.",
+                blob = json.encode(post)
             }
         }
     end
 
-    if not post_comments  then
-        post_comments = {
-            has_error = true,
-            error_type = "not_found",
-            error_info = {
-                message = "Post comments not found in page HTML",
-                blob = post_comments
-            }
-        }
-    end
 
-    return { post = post_info, comments = post_comments }
+    return post.data.xdt_shortcode_media
+
 end
 
-return get_post
+
+return get_post_graphql

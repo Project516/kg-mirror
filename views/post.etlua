@@ -4,31 +4,33 @@
 <div class="container">
     <div class="post">
         <div class="user-info">
-                <img src="<%= proxy_url(post.user.profile_pic_url) %>">
-                <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
+                <img src="<%= proxy_url(post.owner.profile_pic_url) %>">
+                <a class="username" href="<%= "/" .. post.owner.username %>"> <%= post.owner.username %> </a>
             </div>
         <div class="post-image">
-            <% if type(post.video_versions) == "table" then %>
+            <% if post.video_url then %>
                 <video controls>
-                    <source src="<%= proxy_url(post.video_versions[1].url) %>"> 
+                    <source src="<%= proxy_url(post.video_url) %>">
                 </video>
-            <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
+            <% elseif post.edge_sidecar_to_children then %>
                 <div class="carousel">
-                    <% for _, image in ipairs(post.carousel_media) do %>
-                        <img src="<%= proxy_url(image.display_uri) %>">
+                    <% for _, image in ipairs(post.edge_sidecar_to_children.edges) do %>
+                        <img src="<%= proxy_url(image.node.display_resources[1].src) %>">
                     <% end %>
                 </div>
-            <% elseif type(post.image_versions2) == "table" then %>
-                <img src="<%= post.image_versions2.candidates[1].url %>" style="max-height: 35em;">
+            <% elseif not post.edge_sidecar_to_children and post.display_resources then %>
+                <img src="<%= proxy_url(post.display_resources[1].src) %>" style="max-height: 35em;">
+            <% else %>
+                <p>Image couldn't be detected.</p>
             <% end %>
         </div>
 
         <div class="post-info">
-            <time class="post-time" datetime="<%= os.date('%Y-%m-%d %H:%M:%S', post.taken_at) %>">Posted at: <%=  os.date('%Y-%m-%d %H:%M:%S', post.taken_at) %></time>
+            <time class="post-time" datetime="<%= os.date('%Y-%m-%d %H:%M:%S', post.taken_at_timestamp) %>">Posted at: <%=  os.date('%Y-%m-%d %H:%M:%S', post.taken_at_timestamp) %></time>
             <div class="post-body">
                 <div class="caption">
-                    <% if type(post.caption) == "table" then %>
-                        <p class="post-caption-text"><%= post.caption.text %></p>
+                    <% if post.edge_media_to_caption and #post.edge_media_to_caption.edges > 0 then %>
+                        <p class="post-caption-text"><%= post.edge_media_to_caption.edges[1].node.text %></p>
                     <% end %>
             </div>
         </div>
@@ -50,7 +52,6 @@
                 </article>
             <% end %>
             <hr>
-            <p><i>getting the rest of the comments is pretty hard to do rn, sorry</i></p>
+            <p><i>Fetching more posts is currently not possible.</i></p>
         </div>
-    </div>  
 </div>

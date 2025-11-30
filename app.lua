@@ -15,7 +15,7 @@ local get_post = require("lib.get_post")
 local get_user_info = require("lib.get_user_info")
 local get_user_posts = require("lib.get_user_posts")
 local search = require("lib.search")
-
+local get_comments = require("lib.get_comments")
 -- welcome to the soup
 
 
@@ -26,7 +26,7 @@ app:before_filter(function(self)
 end)
 
 
--- todo: replace this with a proper page
+
 app:get("/", function(self)
     self.instance_about_message = config.instance_about
 
@@ -36,9 +36,10 @@ end)
 local function show_post(self)
     local post = get_post(self.params.shortcode)
 
-    if post.post.has_error == true then
-        self.error = post.post
-        if post.post.error_type == "not_found" then
+    if post.has_error == true then
+        self.error = post
+
+        if post.error_type == "not_found" then
             self.page_title = "Not Found | Kittygram"
             return { status = 404, render = "error" }
         else
@@ -46,10 +47,10 @@ local function show_post(self)
             return { status = 500, render = error }
         end
     else
-        self.post = post.post -- heh
-        self.comments = post.comments
-        self.page_title = "A post by " .. post.post.user.username
-
+        self.post = post
+        self.page_title = "A post by " .. post.owner.username
+        local comments = get_comments(post.id)
+        self.comments = comments
         if self.params.json == "true" then return { json = post } end
         return { render = "post" }
     end
@@ -163,4 +164,9 @@ app:get("/*", function(self)
 end)
 
 
+app:get("/test", function(self)
+    local post = get_post("DQ6lrHzjEKJ")
+    return {json = post}
+
+end)
 return app

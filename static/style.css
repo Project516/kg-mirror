@@ -89,7 +89,7 @@ body {
 .carousel {
     overflow: auto;
     min-width: 30em;
-    max-width: 40em;
+    max-width: 30em;
 }
 
 .comments {
