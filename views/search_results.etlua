@@ -5,9 +5,9 @@
 %>
 
 <main id="main">
-    <h2 class="search-results-heading">Search results for <%= search_query %> </h2>
+    <h2 class="item-heading">Search results for <%= search_query %> </h2>
     <% if #search_results.users > 0 then %>
-        <h3 class="search-results-heading">Users</h3>
+        <h3 class="item-heading">Users</h3>
         <% for _, user in ipairs(search_results.users) do %>
             <% user = user.user %>
             <div class="user-info item-card search-result">
@@ -17,7 +17,7 @@
         <% end %>
     <% end %>
     <% if #search_results.hashtags > 0 then %>
-        <h3 class="search-results-heading">Hashtags</h3>
+        <h3 class="item-heading">Hashtags</h3>
         <% for _, hashtag in ipairs(search_results.hashtags) do %>
             <% hashtag = hashtag.hashtag %>
             <div class="item-card search-result">

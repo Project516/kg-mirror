@@ -15,6 +15,7 @@ local instagram_headers = {
 }
 
 
+-- This method gets ratelimited too fast to be useful. Still documented here.
 
 local function get_user_info_api(username)
     local start_uri = "https://www.instagram.com/api/v1/users/web_profile_info/?username="
@@ -42,7 +43,6 @@ local function get_user_info_graphql(userid)
         __relay_internal__pv__PolarisCannesGuardianExperienceEnabledrelayprovider =  false,
         __relay_internal__pv__PolarisCASB976ProfileEnabledrelayprovider = false
     }
-
 
     local user_info = instagram_graphql_request(payload, doc_id)
 

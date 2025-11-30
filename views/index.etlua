@@ -1,0 +1,23 @@
+<main id="main">
+
+    <div class="item-card">
+        <form method="GET" action="/search">
+            <input type="text" placeholder="Enter search..." name="q">
+            <button>Search</button>
+        </form>
+    </div>
+    <h2 class="item-heading">About</h2>
+    <div class="item-card">
+        <p>Kittygram is an anonymous, privacy-friendly, lightweight, and open-source Instagram frontend inspired by <a href="https://github.com/zedeus/nitter">nitter</a>. It offers a clean, fast way to browse Instagram without the usual clutter or tracking.</p>
+
+        <p>The official Instagram web interface is heavy on JavaScript, slow to load, and filled with pop-ups. Kittygram avoids all of that by serving fully prerendered pages, making it faster and easier to use. Kittygram also helps you avoid the heavy tracking instagram does, as all requests are handled by kittygram.</p>
+
+        <p>To get started using it, you can search for users or hashtags by clicking on the search icon above, or replace www.instagram.com in any Instagram link with this domain.</p>
+    </div>
+
+    <h2 class="item-heading">About this instance</h2>
+
+    <div class="item-card">
+        <p style="white-space: pre-line"> <%= instance_about_message %> <p>
+    </div>
+</main>

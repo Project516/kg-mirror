@@ -21,6 +21,13 @@
                 <p> <%= error.error_info.message %> </p>
                 <pre><%= error.error_info.blob %></pre>
             </details>
+        <% elseif error.error_type == "route_not_defined" then %>
+            <h2>Page not found</h2>
+            <p>Your link may be broken.</p>
+            <details>
+                <summary>More Details</summary>
+                <p>No route was defined for this request</p>
+            </details>
         <% else %>
             <h2> Error! </h2>
             <p>An unexpected error occurred</p>

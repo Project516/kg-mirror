@@ -1,7 +1,10 @@
 local lapis = require("lapis")
 local http = require("resty.http")
 local util = require("lapis.util")
+local config = require("lapis.config").get()
 local app = lapis.Application()
+
+
 local json = require("cjson")
 local helpers = require("lib.helpers")
 
@@ -15,29 +18,19 @@ local search = require("lib.search")
 
 -- welcome to the soup
 
+
+-- generate the "view on instagram" link.
 app:before_filter(function(self)
     self.view_on_instagram_link = "https://www.instagram.com" ..
                                       self.req.parsed_url.path
 end)
+
+
 -- todo: replace this with a proper page
 app:get("/", function(self)
+    self.instance_about_message = config.instance_about
 
-    return {
-        [[
- _    _ _   _
-| | _(_| |_| |_ _   _  __ _ _ __ __ _ _ __ ___
-| |/ | | __| __| | | |/ _` | '__/ _` | '_ ` _ \
-|   <| | |_| |_| |_| | (_| | | | (_| | | | | | |
-|_|\_|_|\__|\__|\__, |\__, |_|  \__,_|_| |_| |_|
-                |___/ |___/
-This is an instance of kittygram, an instagram frontend.  
-Try replacing the "www.instagram.com" part of a post's url with this instances address to try it!  
-
-  
-    ]],
-        content_type = "text/plain",
-        layout = false
-    }
+    return { render = "index" }
 end)
 
 local function show_post(self)
@@ -104,7 +97,7 @@ app:get("/:username", function(self)
             return { status = 404, render = "error" }
         else
             self.page_title = "Error | Kittygram"
-            return { render = "error" }
+            return { status = 500, render = "error" }
         end
     else
         self.page_title = "@" .. self.params.username .. " - kittygram"
@@ -156,5 +149,18 @@ app:get("/search", function(self)
     end
 
 end)
+
+app:get("/*", function(self)
+    self.error = {
+        has_error = true,
+        error_type = "route_not_defined",
+        error_info = {
+            error_message = "No route was defined for this request.",
+            error_blob = nil,
+        }
+    }
+    return { status = 404, render  = "error" }
+end)
+
 
 return app
