@@ -1,5 +1,4 @@
 <main id="main">
-
     <div class="item-card search-form">
         <form method="GET" action="/search">
             <input type="text" placeholder="Enter search..." name="q">
@@ -19,6 +18,6 @@
     <h2 class="item-heading">About this instance</h2>
 
     <div class="item-card">
-        <p style="white-space: pre-line"> <%= instance_about_message %> <p>
+        <% render("views.about_instance") %>
     </div>
 </main>

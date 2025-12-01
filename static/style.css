@@ -212,10 +212,6 @@ pre {
         margin-bottom: 2em;
     }
 
-    .item-card {
-        margin-right: 5%;
-        margin-left: 5%;
-    }
     .post-image img, .post-image video {
         max-height: 30em;
     }
