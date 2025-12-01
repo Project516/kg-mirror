@@ -1,7 +1,7 @@
 <% local proxy_url = require("lib.helpers").proxy_url %>
 
 
-<div class="container">
+<main id="main">
     <div class="post">
         <div class="user-info">
                 <img src="<%= proxy_url(post.owner.profile_pic_url) %>">
@@ -54,4 +54,4 @@
             <hr>
             <p><i>Fetching more posts is currently not possible.</i></p>
         </div>
-</div>
+</main>
