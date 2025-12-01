@@ -28,6 +28,7 @@ end)
 
 
 app:get("/", function(self)
+    self.page_title = "kittygram"
     self.instance_about_message = config.instance_about
 
     return { render = "index" }
