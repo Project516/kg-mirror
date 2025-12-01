@@ -65,5 +65,8 @@ sudo luarocks install lua-resty-openssl
 > You may have more luck installing modules locally. That is detailed here: https://github.com/leafo/lapis/issues/777#issuecomment-1900359264     
 
 
+--------
+Kittygram is licensed under the AGPL-3.0.  
 
+Icon made by [nulla](https://codeberg.org/nulla).
 
