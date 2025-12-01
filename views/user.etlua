@@ -53,7 +53,7 @@
     </div>
 
 
-    <div class="next-button">
-        <a href="<%= "?after=" .. end_cursor %>">Next Page</a>
-    </div>
+
+    <a href="<%= "?after=" .. end_cursor %>" class="next-button">Next Page</a>
+
 </main>

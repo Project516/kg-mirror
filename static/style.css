@@ -150,15 +150,7 @@ nav {
 
 
 
-.next-button {
-    padding: 0.5em;
-    
-    width: 6em;
-    margin: 0 auto;
-    margin-bottom: 4em;
-    border: 1em;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-}
+
 
 
 button {
@@ -181,18 +173,27 @@ input[type=text] {
     padding: 0.5em;
     border-radius: 15px;
 }
-.next-button a {
-    color: black;
+
+
+.next-button  {
+    width: 10%;
+    padding: 0.5em;
+    border-radius: 20px;
+    margin: 0 auto;
+    color: white;
     text-decoration: none;
-    
-    display: inline;
+    background-color: black;
+    display: block;
     text-align: center;
-    
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    border: 2px solid black;
+    margin-bottom: 2em;
+
 }
 
 .next-button:hover {
-    background-color: #D4D3D4;
-    text-decoration: underline;
+    background-color: white;
+    color: black;
 }
 
 
