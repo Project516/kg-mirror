@@ -1,5 +1,4 @@
 local lapis = require("lapis")
-local http = require("resty.http")
 local util = require("lapis.util")
 local config = require("lapis.config").get()
 local app = lapis.Application()
@@ -149,10 +148,4 @@ app:get("/*", function(self)
     return { status = 404, render  = "error" }
 end)
 
-
-app:get("/test", function(self)
-    local post = get_post("DQ6lrHzjEKJ")
-    return {json = post}
-
-end)
 return app
