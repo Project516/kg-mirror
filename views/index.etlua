@@ -1,6 +1,6 @@
 <main id="main">
 
-    <div class="item-card">
+    <div class="item-card search-form">
         <form method="GET" action="/search">
             <input type="text" placeholder="Enter search..." name="q">
             <button>Search</button>

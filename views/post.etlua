@@ -2,7 +2,7 @@
 
 
 <main id="main">
-    <div class="post">
+    <div class="item-card post">
         <div class="user-info">
                 <img src="<%= proxy_url(post.owner.profile_pic_url) %>">
                 <a class="username" href="<%= "/" .. post.owner.username %>"> <%= post.owner.username %> </a>
@@ -19,7 +19,7 @@
                     <% end %>
                 </div>
             <% elseif not post.edge_sidecar_to_children and post.display_resources then %>
-                <img src="<%= proxy_url(post.display_resources[1].src) %>" style="max-height: 35em;">
+                <img src="<%= proxy_url(post.display_resources[1].src) %>">
             <% else %>
                 <p>Image couldn't be detected.</p>
             <% end %>
@@ -32,26 +32,27 @@
                     <% if post.edge_media_to_caption and #post.edge_media_to_caption.edges > 0 then %>
                         <p class="post-caption-text"><%= post.edge_media_to_caption.edges[1].node.text %></p>
                     <% end %>
+                </div>
+                <h2> Comments </h2>
+                <div class="comments">
+                    <% for _, comment in ipairs(comments) do %>
+                        <% comment = comment.node %>
+                        <article>
+                            <header class="user-info">
+                                <img src="<%= proxy_url(comment.user.profile_pic_url) %>" >
+                                <a class="username" href="<%= "/" .. comment.user.username %>"> <%= comment.user.username %> </a>
+                            </header>
+                            <p class="comment-text"><%= comment.text %></p>
+                            <% if type(comment.giphy_media_info) == "table" then %>
+                                <img src="<%= proxy_url(comment.giphy_media_info.first_party_cdn_proxied_images.fixed_height.url) %>">
+                            <% end %>
+                        </article>
+                    <% end %>
+                    <hr>
+                    <p><i>Fetching more posts is currently not possible.</i></p>
+                </div>
             </div>
         </div>
 
-        <h2> Comments </h2>
-        <div class="comments">
-            <% for _, comment in ipairs(comments) do %>
-                <% comment = comment.node %>
 
-                <article>
-                    <header class="user-info">
-                        <img src="<%= proxy_url(comment.user.profile_pic_url) %>" >
-                        <a class="username" href="<%= "/" .. comment.user.username %>"> <%= comment.user.username %> </a>
-                    </header>
-                    <p class="comment-text"><%= comment.text %></p>
-                    <% if type(comment.giphy_media_info) == "table" then %>
-                        <img src="<%= proxy_url(comment.giphy_media_info.first_party_cdn_proxied_images.fixed_height.url) %>">
-                    <% end %>
-                </article>
-            <% end %>
-            <hr>
-            <p><i>Fetching more posts is currently not possible.</i></p>
-        </div>
 </main>

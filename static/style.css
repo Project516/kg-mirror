@@ -1,130 +1,46 @@
-/* {
-    border: 1px solid red;
+:root {
+    --bg-color: white;
+    --main-text-color: black;
+
+    --main-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --outline-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+    --nav-icon-hover-color: #D4D3D4;
+    --alt-text-color: #3a3a3a; /* used on the post's time and when hovering on usernames */
+
+    --button-bg-color: black;
+    --button-text-color: white;
+    --button-border-radius: 20px;
+    --button-border: 2px black solid;
+    --button-bg-color-on-hover: white;
+    --button-text-color-on-hover: black;
+
+    --searchbar-border: 2px black solid;
+
 }
-/**/
+
 body {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    
+    padding-bottom: 2em;
+    background-color: var(--bg-color);
+    color: var(--main-text-color)
 }
 
 
-.user-info img {
-    max-height: 2.5em;
-    border-radius: 0.2em;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+nav {
+    box-shadow: var(--outline-shadow);
+    margin-bottom: 2em;
+    max-height: 3em;
 }
-
-
-.user-posts h2 {
-    text-align: center;
-}
-.username {
-    text-align: center;
-    position: relative;
-    bottom: 1em;
-    color: black;
-    text-decoration: none;
-}
-
-.user-info .username {
-    padding-bottom: 0.1em;
-    
-}
-
-.username:hover {
-    text-decoration: underline;
-    color: #303030
-}
-.post-image img, .post-image video {
-    max-height: 40em;
-    max-width: 40em;
-}
-
-.post {
-    margin-right: 10%;
-    margin-left: 10%;
-    padding-top: 0.5em;
-    padding-bottom: 1em;
-    padding-left: 2em;
-    padding-right: 2em;
-    overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    margin-bottom: 1em;
-
-}
-
-.item-card {
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    margin: 0 auto;
-    width: 60%;
-    padding: 3%;
-}
-
-
-.post-image {
-    margin-right: 4em;
-    float: left;
-    
-    white-space: nowrap;
-}
-
-.post-body {
-    margin-left: 4em;
-    display: inline;
-    width: 30%;
-    overflow-y: auto;
-    max-height: 30em;
-}
-
-.comment-text, .post-caption-text, .user-bio-text {
-    white-space: pre-line;
-}
-.post-info {
-    max-height: 40em;
-    overflow-y: auto;
-}
-
-.carousel {
-    overflow: auto;
-    min-width: 30em;
-    max-width: 30em;
-}
-
-.comments {
-    padding: 4%;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-
-}
-
-.post-time {
-    color: #3a3a3a;
-    size: 0.5em;
-}
-
-.user-info {
-    display: block;
-    margin-bottom: 0.5em;
-   
-}
-
 
 nav img {
     max-height: 3em;
-    
-}
-
-nav {
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-    margin-bottom: 2em;
-    max-height: 3em;
-    
 }
 
 .right-navbar-items {
     float: right;
-
     list-style-type: none;
     display: inline-block;
     margin-top: 0;
@@ -143,32 +59,126 @@ nav {
 }
 
 .right-navbar-items li img:hover {
-    background-color: #D4D3D4;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: var(--nav-icon-hover-color);
+    box-shadow: var(--main-shadow);
 }
 
 
 
+.item-card {
+    box-shadow: var(--main-shadow);
+    margin: 0 auto;
+    width: 60%;
+    padding: 3%;
+    overflow: hidden;
+    margin-bottom: 1em;
+    object-fit: contain;
+}
+
+.post {
+    width: 70%;
+}
+.item-heading {
+    text-align: center;
+}
 
 
+.user-info img {
+    max-height: 2.5em;
+    border-radius: 0.2em;
+    box-shadow: var(--outline-shadow);
+}
 
-button {
-  border-radius: 20px;
+
+.user-posts h2 {
+    text-align: center;
+}
+.username {
+    text-align: center;
+    position: relative;
+    bottom: 1em;
+    color: var(--main-text-color);
+    text-decoration: none;
+}
+
+.user-info .username {
+    padding-bottom: 0.1em;
+}
+
+.username:hover {
+    text-decoration: underline;
+    color: var(--alt-text-color)
+}
+
+.post-image img, .post-image video, .post-image .carousel img {
+    max-height: 30em;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+
+.post-image {
+    margin-right: 4em;
+    float: left;
+    white-space: nowrap;
+    max-width: 65%;
+    max-height: 35em;
+}
+
+.post-body {
+    margin-left: 4em;
+    display: inline;
+    width: 30%;
+
+}
+
+.comment-text, .post-caption-text, .user-bio-text {
+    white-space: pre-line;
+}
+.post-info {
+    max-height: 35em;
+    overflow-y: auto;
+
+}
+
+.carousel {
+    overflow: auto;
+    max-width: 30em;
+}
+
+.comments {
+    padding: 4%;
+    box-shadow: var(--outline-shadow);
+}
+
+.post-time {
+    color: var(--alt-text-color);
+    size: 0.5em;
+}
+
+.user-info {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+
+button, .next-button {
+  border-radius: var(--button-border-radius);
   padding: 0.5em;
   margin: 0 auto;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   background-color: black;
-  border: 2px black solid;
-  color: white;
+  border: var(--button-border);
+  color: var(--button-text-color);
 }
 
-button:hover {
-    background-color: white;
-    color: black;
+button:hover, .next-button:hover {
+    background-color: var(--button-bg-color-on-hover);
+    color: var(--button-text-color-on-hover);
 }
+
 
 input[type=text] {
-    border: 2px black solid;
+    border: var(--searchbar-border);
     padding: 0.5em;
     border-radius: 15px;
 }
@@ -176,33 +186,16 @@ input[type=text] {
 
 .next-button  {
     width: 5em;
-    padding: 0.5em;
-    border-radius: 20px;
-    margin: 0 auto;
-    color: white;
     text-decoration: none;
-    background-color: black;
     display: block;
     text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-    border: 2px solid black;
-    margin-bottom: 2em;
-
-}
-
-.next-button:hover {
-    background-color: white;
-    color: black;
 }
 
 
-.search-result {
-    margin-bottom: 2em;
+.search-form {
+    width: 20em;
 }
 
-.item-heading {
-    text-align: center;
-}
 
 pre {
     white-space: pre-line;
@@ -212,18 +205,22 @@ pre {
     overflow-x: scroll;
 }
 
+
 @media only screen and (max-width: 850px)  {
     .post-image {
         float: none;
+        margin-bottom: 2em;
     }
 
-    .post {
+    .item-card {
         margin-right: 5%;
         margin-left: 5%;
     }
     .post-image img, .post-image video {
         max-height: 30em;
-        max-width: 30em;
+    }
+    .post-image {
+        max-width: 100%;
     }
 }
 

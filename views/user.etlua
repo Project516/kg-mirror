@@ -19,7 +19,7 @@
         <% for _, post in ipairs(posts) do %>
             <% post = post.node %>
             
-            <div class="post">
+            <div class="item-card post">
                 <div class="user-info">
                     <img src="<%= proxy_url(post.user.profile_pic_url) %>">
                     <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
@@ -32,14 +32,14 @@
                     <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
                         <div class="carousel">
                             <% for _, image in ipairs(post.carousel_media) do %>
-                                <img src="<%= proxy_url(image.display_uri) %>">
+                                <img src="<%= proxy_url(image.image_versions2.candidates[1].url) %>">
                             <% end %>
                         </div>
                     <% elseif type(post.image_versions2) == "table" then %>
-                        <img src="<%= post.image_versions2.candidates[1].url %>" style="max-height: 35em;">
+                        <img src="<%= proxy_url(post.image_versions2.candidates[1].url) %>">
                     <% end %>
                 </div>
-                <div class="post-body">
+                <div class="post-info">
                     <div class="caption">  
                         <% if type(post.caption) == "table" then %>
                             <p class="post-caption-text"><%= post.caption.text %></p>
