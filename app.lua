@@ -31,8 +31,6 @@ end)
 
 app:get("/", function(self)
     self.page_title = "kittygram"
-    self.instance_about_message = config.instance_about
-
     return { render = "index" }
 end)
 
@@ -54,7 +52,9 @@ local function show_post(self)
         self.page_title = "A post by " .. post.owner.username
         local comments = get_comments(post.id)
         self.comments = comments
-        if self.params.json == "true" then return { json = post } end
+        if self.params.json == "true" and config.allow_json then
+            return { json = post }
+        end
         return { render = "post" }
     end
 end
@@ -110,10 +110,10 @@ app:get("/:username", function(self)
         local user_info = get_user_info(user_id)
         self.user = user_info.data
 
-        if self.params.json == "true" then
+        if self.params.json == "true" and config.allow_json then
             return { json = { user_posts, user_info } }
         end
-        -- return { json = user_posts }
+
         return { render = "user" }
 
     end
@@ -127,7 +127,7 @@ app:get("/search", function(self)
         self.search_query = self.params.q
         self.search_results = search_results
 
-        -- return { json = search_results }
+
         return { render = "search_results" }
     else
         self.page_title = "Search | kittygram"
@@ -147,5 +147,8 @@ app:get("/*", function(self)
     }
     return { status = 404, render  = "error" }
 end)
+
+local highlights = require("lib.get_highlights")
+
 
 return app

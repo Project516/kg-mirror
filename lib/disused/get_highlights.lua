@@ -1,6 +1,9 @@
 local http = require("resty.http")
 local json = require("cjson")
 
+
+-- Fetch a list of highlights for a given user.
+-- Not in use currently as viewing highlights requires auth.
 local function get_highlights(userid)
     local httpc = http.new()
     -- Instagram's graphql queries sometimes use get requests.
