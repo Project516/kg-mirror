@@ -148,7 +148,5 @@ app:get("/*", function(self)
     return { status = 404, render  = "error" }
 end)
 
-local highlights = require("lib.get_highlights")
-
 
 return app
