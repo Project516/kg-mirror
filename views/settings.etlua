@@ -1,0 +1,23 @@
+<main id="main">
+    <h2 class="item-heading">Settings</h2>
+    <div class="item-card">
+        <form method="POST" action="/settings/save">
+            <label for="theme">Theme</label>
+            <select name="theme">
+                <% for _, theme in pairs(themes) do %>
+                    <% if theme.name == selected_theme then %>
+                        <option value="<%= theme.name %>" selected><%= theme.display_name %></options>
+                    <% else %>
+                       <option value="<%= theme.name %>"><%= theme.display_name %></options>
+                    <% end %>
+                <% end %>
+            </select>
+            <br>
+            <button>Save settings</button>
+        </form>
+        <br>
+        <form method="POST" action="/settings/reset">
+            <button>Reset settings</button>
+        </form>
+    </div>
+</main>

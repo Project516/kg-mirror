@@ -1,26 +1,35 @@
 :root {
-    --bg-color: white;
-    --main-text-color: black;
 
-    --main-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    --outline-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    --bg-color: #111215;
+    --card-color: #1A1B1E;
+    --main-text-color: #F4F4F6;
+    --alt-text-color: #A0A0A5;
 
-    --nav-icon-hover-color: #D4D3D4;
-    --alt-text-color: #3a3a3a; /* used on the post's time and when hovering on usernames */
 
-    --button-bg-color: black;
-    --button-text-color: white;
+    --main-shadow: 0px 4px 12px rgba(0, 0, 0, 0.32);
+    --outline-shadow:
+    rgba(255, 255, 255, 0.04) 0px 1px 3px 0px,
+    rgba(255, 255, 255, 0.12) 0px 0px 0px 1px;
+
+
+    --nav-icon-hover-color: #E3E3E6;
+
+    --button-bg-color: #F5F5F7;
+    --button-text-color: #111215;
     --button-border-radius: 20px;
-    --button-border: 2px black solid;
-    --button-bg-color-on-hover: white;
-    --button-text-color-on-hover: black;
+    --button-border: 2px solid #2C2D32;
 
-    --searchbar-border: 2px black solid;
+    --button-bg-color-on-hover: #2C2D32;
+    --button-text-color-on-hover: #F5F5F7;
 
-    --link-text-color: #0000EE;
-    --link-hover-color: #0000EE;
-    --link-visited-color: #551A8B;
+
+    --searchbar-border: 2px solid #2C2D32;
+
+    --link-text-color: #6CA8FF;
+    --link-hover-color: #A9C9FF;
+    --link-visited-color: #9BA2D0;
 }
+
 
 body {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -30,7 +39,6 @@ body {
     background-color: var(--bg-color);
     color: var(--main-text-color)
 }
-
 
 a {
     color: var(--link-text-color);
@@ -53,6 +61,8 @@ nav {
 
 nav img {
     max-height: 3em;
+    filter: brightness(0) invert(1);
+
 }
 
 .right-navbar-items {
@@ -75,7 +85,7 @@ nav img {
 }
 
 .right-navbar-items li img:hover {
-    background-color: var(--nav-icon-hover-color);
+    background-color: var(--nav-hover-icon-color);
     box-shadow: var(--main-shadow);
 }
 
@@ -89,6 +99,7 @@ nav img {
     overflow: hidden;
     margin-bottom: 1em;
     object-fit: contain;
+    background-color: var(--card-color);
 }
 
 .post {
@@ -179,12 +190,12 @@ nav img {
 
 
 button, .next-button {
-  border-radius: var(--button-border-radius);
-  padding: 0.5em;
-  margin: 0 auto;
-  background-color: black;
-  border: var(--button-border);
-  color: var(--button-text-color);
+    border-radius: var(--button-border-radius);
+    padding: 0.5em;
+    margin: 0 auto;
+    background-color: var(--button-bg-color);
+    border: var(--button-border);
+    color: var(--button-text-color);
 }
 
 button:hover, .next-button:hover {

@@ -2,7 +2,7 @@ local lapis = require("lapis")
 local util = require("lapis.util")
 local config = require("lapis.config").get()
 local app = lapis.Application()
-
+local date = require("date")
 
 local json = require("cjson")
 local helpers = require("lib.helpers")
@@ -21,13 +21,21 @@ local get_comments = require("lib.get_comments")
 -- welcome to the soup
 
 
--- generate the "view on instagram" link.
+-- generate the "view on instagram" link and set the theme.
 app:before_filter(function(self)
     self.view_on_instagram_link = "https://www.instagram.com" ..
                                       self.req.parsed_url.path
+    if self.session.theme and config.themes[self.session.theme] then
+        self.css_url = config.themes[self.session.theme].url
+    else
+        self.css_url = config.themes[config.default_theme].url
+    end
 end)
 
-
+app.cookie_attributes = function(self)
+    local expires = date(true):adddays(7300):fmt("${http}")
+    return "Expires=" .. expires .. "; Path=/; HttpOnly"
+end
 
 app:get("/", function(self)
     self.page_title = "kittygram"
@@ -134,6 +142,28 @@ app:get("/search", function(self)
         return { render = "search" }
     end
 
+end)
+
+-- RIP to instagram user "settings".
+
+app:get("/settings", function(self)
+    self.themes = config.themes
+    if self.session.theme then
+        self.selected_theme = self.session.theme
+    end
+
+    self.page_title = "Settings | Kittygram"
+    return { render = "settings" }
+end)
+
+app:post("/settings/save", function(self)
+    self.session.theme = self.params.theme
+    return { redirect_to = "/" }
+end)
+
+app:post("/settings/reset", function(self)
+   self.session.theme = nil
+   return { redirect_to = "/" }
 end)
 
 app:get("/*", function(self)
