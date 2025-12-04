@@ -1,0 +1,61 @@
+/* a _really_ basic theme */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    border-bottom: 2px black solid;
+    margin-bottom: 2em;
+    padding-bottom: 0.5em;
+}
+nav img {
+    max-height: 2em;
+}
+
+.right-navbar-items li {
+    display: inline;
+}
+
+.right-navbar-items li img {
+    max-height: 2.5em;
+    border-radius: 0.3em;
+    padding: 0.1em;
+}
+
+.right-navbar-items {
+    float: right;
+    list-style-type: none;
+    display: inline-block;
+    margin-top: 0;
+    padding-top: 0.2em;
+    margin-right: 0.5em;
+}
+
+
+.item-heading {
+    text-align: center;
+}
+.item-card {
+    width: 60%;
+    margin: 0 auto;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    border: 2px black solid;
+    border-radius: 0.5em;
+}
+
+.user-info img {
+    max-height: 2.5em;
+    border-radius: 0.2em;
+}
+
+.post img, .post video {
+    max-height: 30em;
+}
+
+.user-info img {
+    max-height: 2.5em;
+    border-radius: 0.2em;
+}

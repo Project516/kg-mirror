@@ -6,6 +6,9 @@
          <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <% if params.css ~= "false" then %>
             <link rel="stylesheet" href="<%= css_url %>">
+            <% if uses_base_theme then %>
+                <link rel="stylesheet" href="/static/base.css">
+            <% end %>
         <% end %>
     </head>
     <body>

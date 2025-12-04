@@ -1,18 +1,8 @@
 local config = require("lapis.config")
+local themes = require("themes")
+local default_theme = "auto"
 
 
-local themes = {
-  kittygram_light = {
-    name = "kittygram_light",
-    display_name = "Kittygram Light",
-    url = "/static/style.css",
-  },
-  kittygram_dark = {
-    name = "kittygram_dark",
-    display_name = "Kittygram Dark",
-    url = "/static/themes/kittygram-dark.css",
-  }
-}
 
 
 config("development", {
@@ -21,7 +11,7 @@ config("development", {
   num_workers = "1",
   allow_json = true,
   themes = themes,
-  default_theme = "kittygram_light"
+  default_theme = default_theme
 })
 
 config("production", {
@@ -30,5 +20,5 @@ config("production", {
   num_workers = "4",
   allow_json = false,
   themes = themes,
-  default_theme = "kittygram_light"
+  default_theme = default_theme
 })

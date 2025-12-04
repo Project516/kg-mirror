@@ -26,9 +26,19 @@ app:before_filter(function(self)
     self.view_on_instagram_link = "https://www.instagram.com" ..
                                       self.req.parsed_url.path
     if self.session.theme and config.themes[self.session.theme] then
-        self.css_url = config.themes[self.session.theme].url
+        local theme = config.themes[self.session.theme]
+        self.css_url = theme.url
+
+        if theme.uses_base_theme then
+            self.uses_base_theme = true
+        end
     else
-        self.css_url = config.themes[config.default_theme].url
+        local theme = config.themes[config.default_theme]
+        self.css_url = theme.url
+
+        if theme.uses_base_theme then
+            self.uses_base_theme = true
+        end
     end
 end)
 

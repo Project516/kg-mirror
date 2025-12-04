@@ -1,0 +1,24 @@
+:root {
+    --bg-color: white;
+    --card-color: white;
+    --main-text-color: black;
+
+    --main-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --outline-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+    --nav-icon-hover-color: #D4D3D4;
+    --alt-text-color: #3a3a3a; /* used on the post's time and when hovering on usernames */
+
+    --button-bg-color: black;
+    --button-text-color: white;
+    --button-border-radius: 20px;
+    --button-border: 2px black solid;
+    --button-bg-color-on-hover: white;
+    --button-text-color-on-hover: black;
+
+    --searchbar-border: 2px black solid;
+
+    --link-text-color: #0000EE;
+    --link-hover-color: #0000EE;
+    --link-visited-color: #551A8B;
+}

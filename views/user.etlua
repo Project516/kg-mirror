@@ -15,7 +15,7 @@
     </div>
 
     <div class="user-posts">
-        <h2> Posts </h2>
+        <h2 class="item-heading"> Posts </h2>
         <% for _, post in ipairs(posts) do %>
             <% post = post.node %>
             
