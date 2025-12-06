@@ -55,12 +55,15 @@ end)
 local function show_post(self)
     local post = get_post(self.params.shortcode)
 
-    if post.has_error == true then
+    if post.has_errors == true then
         self.error = post
 
         if post.error_type == "not_found" then
             self.page_title = "Not Found | Kittygram"
             return { status = 404, render = "error" }
+        elseif post.error_type == "ratelimited" then
+            self.page_title = "Ratelimited | Kittygram"
+            return { status = 502, render = "error"}
         else
             self.page_title = "Error | Kittygram"
             return { status = 500, render = error }
