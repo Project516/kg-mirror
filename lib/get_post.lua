@@ -16,7 +16,7 @@ local function get_post_graphql(shortcode)
     }
 
 
-    local post = graphql_request(payload, doc_id, "post")
+    local post = graphql_request(payload, doc_id, "posts")
 
     if post.data and post.data.xdt_shortcode_media == json.null then
         return {
