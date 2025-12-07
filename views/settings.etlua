@@ -13,6 +13,13 @@
                 <% end %>
             </select>
             <br>
+            <label for="proxy_videos">Don't proxy videos through the server (can speed up videos)</label>
+            <% if dont_proxy_videos then %>
+                <input type="checkbox" name="dont_proxy_videos" checked>
+            <% else %>
+                <input type="checkbox" name="dont_proxy_videos">
+            <% end %>
+            <br>
             <button>Save settings</button>
         </form>
         <br>

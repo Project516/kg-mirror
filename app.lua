@@ -164,18 +164,24 @@ app:get("/settings", function(self)
     if self.session.theme then
         self.selected_theme = self.session.theme
     end
-
+    if self.session.dont_proxy_videos == "on" then
+        self.dont_proxy_videos = true
+    end
     self.page_title = "Settings | Kittygram"
     return { render = "settings" }
 end)
 
 app:post("/settings/save", function(self)
     self.session.theme = self.params.theme
+    self.session.dont_proxy_videos = self.params.dont_proxy_videos
+
+
     return { redirect_to = "/" }
 end)
 
 app:post("/settings/reset", function(self)
    self.session.theme = nil
+   self.session.dont_proxy_videos = nil
    return { redirect_to = "/" }
 end)
 

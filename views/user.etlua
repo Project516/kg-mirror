@@ -26,9 +26,15 @@
                 </div>
                 <div class="post-image">
                     <% if type(post.video_versions) == "table" then %>
-                        <video controls>
-                            <source src="<%= proxy_url(post.video_versions[1].url) %>"> 
-                        </video>
+                        <% if session.dont_proxy_videos then %>
+                            <video controls>
+                                <source crossorigin="anonymous" src="<%= post.video_versions[1].url %>"
+                            </video>
+                        <% else %>
+                            <video controls>
+                                <source src="<%= proxy_url(post.video_versions[1].url) %>">
+                            </video>
+                        <% end %>
                     <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
                         <div class="carousel">
                             <% for _, image in ipairs(post.carousel_media) do %>
