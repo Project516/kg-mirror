@@ -1,5 +1,6 @@
 local config = require("lapis.config")
-local themes = require("themes")
+local themes = require("conf.themes")
+local proxies = require("conf.proxies")
 local default_theme = "auto"
 
 
@@ -12,7 +13,7 @@ config("development", {
   allow_json = true,
   themes = themes,
   default_theme = default_theme,
-  proxy = false
+  proxies = proxies
 })
 
 config("production", {
@@ -22,5 +23,5 @@ config("production", {
   allow_json = false,
   themes = themes,
   default_theme = default_theme,
-  proxy = false
+  proxies = proxies
 })

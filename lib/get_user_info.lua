@@ -44,7 +44,7 @@ local function get_user_info_graphql(userid)
         __relay_internal__pv__PolarisCASB976ProfileEnabledrelayprovider = false
     }
 
-    local user_info = instagram_graphql_request(payload, doc_id)
+    local user_info = instagram_graphql_request(payload, doc_id, "user_info")
 
     return user_info
 end

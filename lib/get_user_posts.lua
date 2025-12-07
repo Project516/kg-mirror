@@ -31,7 +31,7 @@ local function get_user_posts(username, cursor)
         __relay_internal__pv__PolarisShareSheetV3relayprovider = true
     }
 
-    local posts_request = instagram_graphql_request(payload, doc_id)
+    local posts_request = instagram_graphql_request(payload, doc_id, "user_posts")
 
 
     if not posts_request.errors and helpers.check_nested_field(posts_request, "data", "xdt_api__v1__feed__user_timeline_graphql_connection", "edges") then

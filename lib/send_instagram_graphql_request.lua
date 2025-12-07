@@ -11,7 +11,7 @@ local instagram_headers = {
     ["Accept"] =  "*/*"
 }
 
-local function graphql_request(request_payload, doc_id)
+local function graphql_request(request_payload, doc_id, request_type)
     local httpc = http.new()
     local request_body = "variables=" .. util.escape(json.encode(request_payload)) .. "&doc_id=" .. doc_id
 
@@ -22,9 +22,10 @@ local function graphql_request(request_payload, doc_id)
         body = request_body,
     }
 
-    if config.proxy then
+    -- check if there is a proxy url for the request type.
+    if request_type and config.proxies[request_type] then
         request_opts.proxy_opts = {
-            https_proxy = config.proxy
+            https_proxy = config.proxies[request_type]
         }
     end
 
