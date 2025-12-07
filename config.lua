@@ -11,7 +11,8 @@ config("development", {
   num_workers = "1",
   allow_json = true,
   themes = themes,
-  default_theme = default_theme
+  default_theme = default_theme,
+  proxy = false
 })
 
 config("production", {
@@ -20,5 +21,6 @@ config("production", {
   num_workers = "4",
   allow_json = false,
   themes = themes,
-  default_theme = default_theme
+  default_theme = default_theme,
+  proxy = false
 })

@@ -55,7 +55,7 @@ end)
 local function show_post(self)
     local post = get_post(self.params.shortcode)
 
-    if post.has_errors == true then
+    if post.has_errors then
         self.error = post
 
         if post.error_type == "not_found" then

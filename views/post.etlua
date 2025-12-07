@@ -49,7 +49,7 @@
                         </article>
                     <% end %>
                     <hr>
-                    <p><i>Fetching more posts is currently not possible.</i></p>
+                    <p><i>Fetching more comments is currently not possible.</i></p>
                 </div>
             </div>
         </div>

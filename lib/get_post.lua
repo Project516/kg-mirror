@@ -18,7 +18,7 @@ local function get_post_graphql(shortcode)
 
     if post.data and post.data.xdt_shortcode_media == json.null then
         return {
-            has_error = true,
+            has_errors = true,
             error_type = "not_found",
             error_info = {
                 message = "Post not found.",
