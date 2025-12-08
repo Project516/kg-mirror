@@ -6,18 +6,18 @@
             <select name="theme">
                 <% for _, theme in pairs(themes) do %>
                     <% if theme.name == selected_theme then %>
-                        <option value="<%= theme.name %>" selected><%= theme.display_name %></options>
+                        <option value="<%= theme.name %>" selected><%= theme.display_name %></option>
                     <% else %>
-                       <option value="<%= theme.name %>"><%= theme.display_name %></options>
+                       <option value="<%= theme.name %>"><%= theme.display_name %></option>
                     <% end %>
                 <% end %>
             </select>
             <br>
-            <label for="proxy_videos">Don't proxy videos through the server (can speed up videos)</label>
-            <% if dont_proxy_videos then %>
-                <input type="checkbox" name="dont_proxy_videos" checked>
+            <label for="disable_video_proxying">Disable proxying videos through the server (can speed up videos)</label>
+            <% if disable_video_proxying then %>
+                <input type="checkbox" name="disable_video_proxying" checked>
             <% else %>
-                <input type="checkbox" name="dont_proxy_videos">
+                <input type="checkbox" name="disable_video_proxying">
             <% end %>
             <br>
             <button>Save settings</button>

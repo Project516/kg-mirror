@@ -26,7 +26,7 @@
                 </div>
                 <div class="post-image">
                     <% if type(post.video_versions) == "table" then %>
-                        <% if session.dont_proxy_videos then %>
+                        <% if session.disable_video_proxying then %>
                             <video controls>
                                 <source crossorigin="anonymous" src="<%= post.video_versions[1].url %>"
                             </video>
