@@ -5,5 +5,12 @@
         "i2p": null,
         "yggdrasil": "http://ygg.kittygram.fsky.io/",
         "country": "NL"
+    },
+    {
+        "url": "https://kittygram.irelephant.net",
+        "tor": null,
+        "i2p": null,
+        "yggdrasil": null,
+        "country": "FI"
     }
 ]
