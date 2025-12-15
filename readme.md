@@ -39,10 +39,10 @@ git clone https://codeberg.org/irelephant/kittygram.git
 ```
 3. Build the kittygram image:
 ```Shell
-sudo docker build -t "kittygram"
+sudo docker build . -t "kittygram"
 ```
 4. Run the built image:
-```
+```shell
 sudo docker run -p 80:80 kittygram
 ```  
 
