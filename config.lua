@@ -15,6 +15,9 @@ config({"development", "production"}, {
   trusted_certificate = "/etc/ssl/certs/ca-certificates.crt", -- a path to a file containing trusted CA certs. See: https://github.com/openresty/lua-nginx-module#lua_ssl_trusted_certificate
   themes = themes, -- see: conf/themes.lua
   proxies = proxies, -- see: conf/proxies.lua
+  sqlite = {
+    database = "kittygram.sqlite"
+  }
 })
 
 config("development", {
