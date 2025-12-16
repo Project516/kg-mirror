@@ -1,21 +1,10 @@
 local json = require("cjson")
+local queries = require("lib.structures").queries
 local graphql_request = require("lib.send_instagram_graphql_request")
 
 
-
-local doc_id = "8845758582119845"
-
-
-
 local function get_post_graphql(shortcode)
-    local payload = {
-        shortcode = shortcode,
-        fetch_tagged_user_count = json.null,
-        hoisted_comment_id = json.null,
-        hoisted_reply_id = json.null
-    }
-
-
+    local payload, doc_id = queries.shortcode(shortcode)
     local post = graphql_request(payload, doc_id, "posts")
 
     if post.data and post.data.xdt_shortcode_media == json.null then
