@@ -1,17 +1,26 @@
-FROM openresty/openresty:alpine-fat
+FROM docker.io/openresty/openresty:alpine-fat AS builder
+
+RUN apk add --no-cache openssl-dev
+
+RUN /usr/local/openresty/luajit/bin/luarocks install lapis && \
+    /usr/local/openresty/luajit/bin/luarocks install lua-resty-http && \
+    /usr/local/openresty/luajit/bin/luarocks install lua-cjson && \
+    /usr/local/openresty/luajit/bin/luarocks install htmlparser && \
+    /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl
+
+
+FROM docker.io/openresty/openresty:alpine
 
 WORKDIR /app
 
+RUN apk add --no-cache openssl
+
+COPY --from=builder /usr/local/openresty/luajit/share/lua/ /usr/local/openresty/luajit/share/lua/
+COPY --from=builder /usr/local/openresty/luajit/lib/ /usr/local/openresty/luajit/lib/
+COPY --from=builder /usr/local/openresty/luajit/bin/lapis /usr/local/openresty/luajit/bin/lapis
+
 COPY . .
-
-RUN apk add --no-cache openssl openssl-dev lua-sec
-
-RUN /usr/local/openresty/luajit/bin/luarocks install lapis
-RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-http
-RUN /usr/local/openresty/luajit/bin/luarocks install lua-cjson
-RUN /usr/local/openresty/luajit/bin/luarocks install htmlparser
-RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl
 
 EXPOSE 80
 
-CMD ["lapis", "serve", "production"]
+CMD ["/usr/local/openresty/luajit/bin/lapis", "serve", "production"]
