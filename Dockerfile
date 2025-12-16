@@ -1,20 +1,19 @@
 FROM docker.io/openresty/openresty:alpine-fat AS builder
 
-RUN apk add --no-cache openssl-dev sqlite-dev
+RUN apk add --no-cache openssl-dev
 
 RUN /usr/local/openresty/luajit/bin/luarocks install lapis && \
     /usr/local/openresty/luajit/bin/luarocks install lua-resty-http && \
     /usr/local/openresty/luajit/bin/luarocks install lua-cjson && \
     /usr/local/openresty/luajit/bin/luarocks install htmlparser && \
-    /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl && \
-    /usr/local/openresty/luajit/bin/luarocks install lsqlite3
+    /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl
 
 
 FROM docker.io/openresty/openresty:alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache openssl sqlite sqlite-dev
+RUN apk add --no-cache openssl
 
 COPY --from=builder /usr/local/openresty/luajit/share/lua/ /usr/local/openresty/luajit/share/lua/
 COPY --from=builder /usr/local/openresty/luajit/lib/ /usr/local/openresty/luajit/lib/

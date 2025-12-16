@@ -3,14 +3,14 @@
 <main id="main">
     <div class="item-card user-info">
         <div class="profile-picture">
-            <img src="<%= proxy_url(user.profile_pic_url) %>">
+            <img src="<%= proxy_url(user.user.profile_pic_url) %>">
         </div>
         <div class="usernames" >
-            <p> <%= user.full_name %> </p>
-            <p> <%= user.username %> </p>
+            <p> <%= user.user.full_name %> </p>
+            <p> <%= user.user.username %> </p>
         </div>
         <div class="user-bio">
-            <p class="user-bio-text"><%= user.biography %></p>
+            <p class="user-bio-text"><%= user.user.biography %></p>
         </div>
     </div>
 
