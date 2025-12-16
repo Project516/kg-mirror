@@ -13,3 +13,12 @@ kittygram-dev-1.rockspec
 /lua
 /lua_modules
 /.luarocks
+
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+LICENSE
+readme.md
+instances.json
+lib/disused/
