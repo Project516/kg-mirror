@@ -22,6 +22,9 @@ COPY --from=builder /usr/local/openresty/luajit/bin/lapis /usr/local/openresty/l
 
 COPY . .
 
+RUN /usr/local/openresty/luajit/bin/lapis migrate
+RUN chown -R nobody:nobody /app
+
 EXPOSE 80
 
 CMD ["/usr/local/openresty/luajit/bin/lapis", "serve", "production"]
