@@ -60,10 +60,8 @@ sudo luarocks install lua-resty-http
 sudo luarocks install htmlparser
 sudo luarocks install cjson
 sudo luarocks install lua-resty-openssl
-sudo luarocks install lsqlite3
 ```
-4. Run `lapis migrate` to create the tables in the database.  
-5. Run `lapis serve production` to run the project.
+4. Run `lapis serve production` to run the project.
 
 > [!NOTE]  
 > You may have more luck installing modules locally. That is detailed here: https://github.com/leafo/lapis/issues/777#issuecomment-1900359264     

@@ -6,7 +6,6 @@ logs/
 uwsgi_temp/
 client_body_temp/
 
-*.sqlite
 *.kate-swp
 
 kittygram-dev-1.rockspec
