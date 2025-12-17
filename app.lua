@@ -80,14 +80,14 @@ local function show_post(self)
     end
 end
 
-app:get("/p/:shortcode", show_post)
-app:get("/:username/p/:shortcode", show_post)
-app:get("/reel/:shortcode", show_post)
-app:get("/:username/reel/:shortcode", show_post)
+app:get("/p/:shortcode(/)", show_post)
+app:get("/:username/p/:shortcode(/)", show_post)
+app:get("/reel/:shortcode(/)", show_post)
+app:get("/:username/reel/:shortcode(/)", show_post)
 
 
 
-app:get("/:username", function(self)
+app:get("/:username(/)", function(self)
     local user = get_user(self.params.username, self.params.after)
     if user.has_errors then
         self.error = user
@@ -113,7 +113,7 @@ app:get("/:username", function(self)
     end
 end)
 
-app:get("/search", function(self)
+app:get("/search(/)", function(self)
     if self.params.q then
 
         local search_results = search(self.params.q)
@@ -132,7 +132,7 @@ end)
 
 -- RIP to instagram user "settings".
 
-app:get("/settings", function(self)
+app:get("/settings(/)", function(self)
     self.themes = config.themes
     if self.session.theme then
         self.selected_theme = self.session.theme
@@ -144,7 +144,7 @@ app:get("/settings", function(self)
     return { render = "settings" }
 end)
 
-app:post("/settings/save", function(self)
+app:post("/settings/save(/)", function(self)
     self.session.theme = self.params.theme
     self.session.disable_video_proxying = self.params.disable_video_proxying
 
@@ -152,7 +152,7 @@ app:post("/settings/save", function(self)
     return { redirect_to = "/" }
 end)
 
-app:post("/settings/reset", function(self)
+app:post("/settings/reset(/)", function(self)
    self.session.theme = nil
    self.session.disable_video_proxying = nil
    return { redirect_to = "/" }
