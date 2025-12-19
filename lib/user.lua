@@ -83,8 +83,12 @@ local function arrange_user_data(username, after_cursor)
             user_id = user_id_db.get_user_id(username)
         else
             user_id = get_user_id(username)
-            -- save id for later.
-            user_id_db.save_user_id(username, user_id)
+            if user_id.has_errors then
+                return user_id
+            else
+                -- save id for later.
+                user_id_db.save_user_id(username, user_id)
+            end
         end
     else
         if not helpers.check_nested_field(user_posts.posts[1], "node", "coauthor_producers", 1) then

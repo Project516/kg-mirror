@@ -28,6 +28,14 @@
                 <summary>More Details</summary>
                 <p>No route was defined for this request</p>
             </details>
+        <% elseif error.error_type == "blocked" then %>
+            <h2>Blocked by instagram.</h2>
+            <p>This server has been blocked from accessing some data by instagram.</p>
+            <p>Non-private users or users with posts may still be accessible</p>
+            <details>
+                <summary>More Details</p>
+                <p><%= error.error_info_message %></p>
+            </details>
         <% else %>
             <h2> Error! </h2>
             <p>An unexpected error occurred</p>

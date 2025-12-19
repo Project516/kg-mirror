@@ -30,9 +30,29 @@ local function get_user_id(username)
         ngx.log(ngx.ERR, "Request failed: " .. err)
     end
 
-    -- very fragile pattern, may break in future.
-    local id = user_request.body:match([["profile_id"%s*:%s*"(%d+)"]])
-    return id
+    if user_request.status == 429 then
+        return {
+            has_errors = true,
+            error_type = "ratelimited",
+            error_info = {
+                message = "Instagram returned 429.",
+                blob = "",
+            }
+        }
+    elseif user_request.status == 302 then
+        return {
+            has_errors = true,
+            error_type = "blocked",
+            error_info = {
+                message = "Kittygram has been blocked from accessing user pages. This means that private users and users without posts are currently unreachable. Normal users are probably not blocked.",
+                blob = ""
+            }
+        }
+    else
+        -- very fragile pattern, may break in future.
+        local id = user_request.body:match([["profile_id"%s*:%s*"(%d+)"]])
+        return id
+    end
 end
 return get_user_id
 

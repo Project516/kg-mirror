@@ -97,6 +97,9 @@ app:get("/:username(/)", function(self)
         elseif user.error_type == "ratelimited" then
             self.page_title = "Ratelimited | Kittygram"
             return { status = 503, render = "error" }
+        elseif user.error_type == "blocked" then
+            self.page_title = "Blocked | Kittygram"
+            return { status = 502, render = "error" }
         else
             self.page_title = "Error | Kittygram"
             return { status = 500, render = "error" }
