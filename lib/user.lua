@@ -1,10 +1,14 @@
 local instagram_graphql_request = require("lib.send_instagram_graphql_request")
 local helpers = require("lib.helpers")
 local queries = require("lib.structures").queries
+local errors = require("lib.structures").errors
 local json = require("cjson")
+local config = require("lapis.config").get()
+local get_redis = require("lapis.redis").get_redis
 local get_user_id = require("lib.get_user_id_web")
 local user_id_db = require("models.user_ids")
 
+local USER_INFO_EXPIRE_TIME = config.cache.expire_times.user_info.positive
 
 local function get_user_posts(username, cursor)
 
@@ -19,41 +23,47 @@ local function get_user_posts(username, cursor)
         return { posts = posts, end_cursor = end_cursor }
 
     elseif posts_request.errors and posts_request.errors[1].code == 4630001 then
-        return {
-            has_errors = true,
-            error_type = "not_found",
-            error_info = {
-                message = "User not found.",
-                blob = json.encode(posts_request)
-            }
+        return errors.not_found{
+            message = "User not found.",
+            blob = posts_request
         }
     elseif posts_request.status == "fail" and posts_request.require_login == true then
-        return {
-            has_errors = true,
-            error_type = "ratelimited",
-            error_info = {
-                message = "This instance may be rate-limited. Try again in a minute.",
-                blob = json.encode(posts_request)
-            }
+        return errors.ratelimited{
+            blob = posts_request
         }
     end
 
-    return {
-        has_errors = true,
-        error_type = "unknown",
-        error_info = {
-            message = "Something went wrong.",
-            blob = json.encode(posts_request)
-        }
+    return errors.unknown{
+        blob = posts_request
     }
 end
 
 -- this could probably do with more error handling.
+-- Since kittygram checks for posts first, that usually handles most errors
 local function get_user_info(user_id)
-    local payload, doc_id = queries.user_info(user_id)
-    local user_info = instagram_graphql_request(payload, doc_id, "user_info")
-    return user_info.data.user
+    local redis = get_redis()
+    local user_query
+
+    if not redis then
+        ngx.log(ngx.ERR, "Redis connection failed: ", err)
+    else
+        user_query = redis:get("ig:user:" .. user_id)
+    end
+
+    if redis and user_query ~= ngx.null then
+        local user_info = json.decode(user_query)
+        return user_info
+    else
+        local payload, doc_id = queries.user_info(user_id)
+        local user_info = instagram_graphql_request(payload, doc_id, "user_info")
+        if redis then
+            redis:set("ig:user:" .. user_id, json.encode(user_info.data.user), "EX", USER_INFO_EXPIRE_TIME)
+        end
+        return user_info.data.user
+    end
 end
+
+
 
 
 

@@ -37,14 +37,14 @@ Kittygram also helps you avoid the heavy tracking instagram does, as all request
 ```shell
 git clone https://codeberg.org/irelephant/kittygram.git
 ```
-3. Build the kittygram image:
-```Shell
-sudo docker build . -t "kittygram"
-```
-4. Run the built image:
+3. Move to the projects directory:
 ```shell
-sudo docker run -p 80:80 kittygram
-```  
+cd kittygram
+```
+4. Start the container
+```shell
+sudo docker compose up
+```
 
 # Method 2: Running from scratch
 1. Clone the project:
@@ -52,17 +52,21 @@ sudo docker run -p 80:80 kittygram
 git clone https://codeberg.org/irelephant/kittygram.git
 ```
 2. Install [openresty](https://openresty.org/en/installation.html)
-3. Install [luarocks](https://luarocks.org/) (likely in your distro's package manager), and install the project's dependencies:
+3. Install [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-redis/) or [valkey](https://valkey.io/topics/installation/)
+4. Install [luarocks](https://luarocks.org/) (likely in your distro's package manager), and install the project's dependencies:
 ```shell
 # Try running CC="gcc -std=gnu99" if you get some compilation errors. 
 sudo luarocks install lapis
 sudo luarocks install lua-resty-http
 sudo luarocks install htmlparser
-sudo luarocks install cjson
+sudo luarocks install lua-cjson
 sudo luarocks install lua-resty-openssl
+sudo luarocks install lsqlite3
+sudo luarocks install lua-resty-redis
+sudo luarocks install lapis-redis
 ```
-4. Run `lapis migrate`
-5. Run `lapis serve production` to run the project.
+5. Run `lapis migrate`
+6. Run `lapis serve production` to run the project.
 
 > [!NOTE]  
 > You may have more luck installing modules locally. That is detailed here: https://github.com/leafo/lapis/issues/777#issuecomment-1900359264     

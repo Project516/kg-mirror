@@ -7,6 +7,8 @@ RUN /usr/local/openresty/luajit/bin/luarocks install lapis && \
     /usr/local/openresty/luajit/bin/luarocks install lua-cjson && \
     /usr/local/openresty/luajit/bin/luarocks install htmlparser && \
     /usr/local/openresty/luajit/bin/luarocks install lua-resty-openssl && \
+    /usr/local/openresty/luajit/bin/luarocks install lua-resty-redis && \
+    /usr/local/openresty/luajit/bin/luarocks install lapis-redis && \
     /usr/local/openresty/luajit/bin/luarocks install lsqlite3
 
 
@@ -19,6 +21,8 @@ RUN apk add --no-cache openssl sqlite sqlite-dev
 COPY --from=builder /usr/local/openresty/luajit/share/lua/ /usr/local/openresty/luajit/share/lua/
 COPY --from=builder /usr/local/openresty/luajit/lib/ /usr/local/openresty/luajit/lib/
 COPY --from=builder /usr/local/openresty/luajit/bin/lapis /usr/local/openresty/luajit/bin/lapis
+COPY --from=builder /usr/local/openresty/lualib/ /usr/local/openresty/lualib/
+
 
 COPY . .
 
@@ -27,4 +31,4 @@ RUN chown -R nobody:nobody /app
 
 EXPOSE 80
 
-CMD ["/usr/local/openresty/luajit/bin/lapis", "serve", "production"]
+CMD ["/usr/local/openresty/luajit/bin/lapis", "serve", "docker"]

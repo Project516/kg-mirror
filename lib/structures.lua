@@ -1,4 +1,6 @@
 local json = require("cjson")
+local check_nested_field = require("lib.helpers").check_nested_field
+
 local doc_ids = {
     shortcode = "8845758582119845",
     user_info = "33257018913889225",
@@ -69,4 +71,140 @@ local queries = {
     end,
 }
 
-return { queries = queries, doc_ids = doc_ids }
+
+
+
+
+local errors = {
+    not_found = function(args)
+        return {
+            has_errors = true,
+            error_type = "not_found",
+            error_info = {
+                message = args.message or "The requested content was not found.",
+                blob = json.encode(args.blob)
+            }
+        }
+    end,
+    ratelimited = function(args)
+        return {
+            has_errors = true,
+            error_type = "ratelimited",
+            error_info = {
+                message = args.message or "This instance may be rate-limited. Try again in a minute.",
+                blob = json.encode(args.blob)
+            }
+        }
+    end,
+    blocked = function(args)
+        return {
+            has_errors = true,
+            error_type = "blocked",
+            error_info = {
+                message = args.message or "This instance has been blocked from accessing that content. This may be permanent",
+                blob = json.encode(args.blob)
+            }
+        }
+    end,
+    unknown = function(args)
+        return {
+            has_errors = true,
+            error_type = "unknown",
+            error_info = {
+                message = args.message or "An unknown error occurred.",
+                blob = json.encode(args.blob)
+            }
+        }
+    end
+}
+
+-- all of instagram's apis return posts in a different format.
+-- this takes  posts from different formats and turns them into a universal format
+local format_post = {
+    from_shortcode = function(shortcode)
+        -- stuff that should be found across all posts
+        local post = {
+            shortcode = shortcode.shortcode,
+            alt_text = shortcode.accessibility_caption,
+            timestamp = shortcode.taken_at_timestamp,
+            id = shortcode.id,
+        }
+
+        post.user = {
+            username = shortcode.owner.username,
+            display_name = shortcode.owner.full_name,
+            id = shortcode.owner.id,
+            profile_picture = shortcode.owner.profile_pic_url,
+            is_verified = shortcode.owner.is_verified,
+        }
+
+        if shortcode.edge_media_preview_like and shortcode.edge_media_preview_like.count then
+            post.likes = shortcode.edge_media_preview_like.count
+        end
+        if shortcode.edge_media_to_caption and #shortcode.edge_media_to_caption.edges > 0 then
+            post.caption = shortcode.edge_media_to_caption.edges[1].node.text
+        end
+        if shortcode.video_url then
+            post.video_url = shortcode.video_url
+            post.video_thumbnail = shortcode.thumbnail_src
+            post.view_count = shortcode.video_view_count
+        end
+
+        if shortcode.edge_sidecar_to_children then
+            post.images = {}
+            for _, item in ipairs(shortcode.edge_sidecar_to_children.edges) do
+                if item.node.video_url then
+                    table.insert(post.images, {
+                        video_url = item.node.video_url,
+                        alt_text = item.node.accessibility_caption
+                    })
+                else
+                    table.insert(post.images, {
+                        image_url = item.node.display_resources[1].src,
+                        alt_text = item.node.accessibility_caption
+                    })
+                end
+            end
+        elseif shortcode.display_resources then
+            post.image_url = shortcode.display_resources[1].src
+        end
+
+        return post
+    end,
+    -- this doesn't yet handle videos in an image carousel.
+    from_timeline = function(item)
+        local post = {
+            shortcode = item.code,
+            id = item.pk,
+            timestamp = item.taken_at
+        }
+
+        post.user = {
+            username = item.user.username,
+            display_name = item.user.full_name,
+            id = item.user.id,
+            profile_picture = item.user.profile_pic_url,
+            is_verified = item.user.is_verified,
+        }
+        if item.accessibility_caption then
+            post.alt_text = item.accessibility_caption
+        end
+        if item.video_versions then
+            post.video_url = item.video_versions[1].url
+        elseif item.carousel_media then
+            post.images = {}
+            for _, item in ipairs(item.carousel_media) do
+                table.insert(post.images, {
+                    image_url = item.image_version2.candidates[1].url,
+                    alt_text = item.accessibility_caption
+                })
+            end
+        elseif item.image_versions2 and not item.video_versions and not item.carousel_media then
+            post.image_url = item.image_versions2.candidates[1].url
+        end
+        return post
+    end
+}
+
+
+return { queries = queries, doc_ids = doc_ids, format_post = format_post, errors = errors }

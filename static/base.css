@@ -107,7 +107,7 @@ nav img {
   margin-right: 4em;
   float: left;
   white-space: nowrap;
-  max-width: 65%;
+  max-width: 60%;
   max-height: 35em;
 }
 
@@ -129,7 +129,7 @@ nav img {
 
 .carousel {
   overflow: auto;
-  max-width: 30em;
+  max-width: 25em;
 }
 
 .comments {

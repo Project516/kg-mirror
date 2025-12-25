@@ -3,6 +3,7 @@ local html = require("htmlparser")
 local json = require("cjson")
 local helpers = require("lib.helpers")
 local config = require("lapis.config").get()
+local errors = require("lib.structures").errors
 
 local totally_human_headers = {
     ["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -31,22 +32,12 @@ local function get_user_id(username)
     end
 
     if user_request.status == 429 then
-        return {
-            has_errors = true,
-            error_type = "ratelimited",
-            error_info = {
-                message = "Instagram returned 429.",
-                blob = "",
-            }
+        return errors.ratelimited{
+            message = "Instagram returned 429 on profile page."
         }
     elseif user_request.status == 302 then
-        return {
-            has_errors = true,
-            error_type = "blocked",
-            error_info = {
-                message = "Kittygram has been blocked from accessing user pages. This means that private users and users without posts are currently unreachable. Normal users are probably not blocked.",
-                blob = ""
-            }
+        return errors.blocked{
+            message = "Kittygram has been blocked from accessing user pages. This means that private users and users without posts are currently unreachable. Normal users are probably also blocked."
         }
     else
         -- very fragile pattern, may break in future.

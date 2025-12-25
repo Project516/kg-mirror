@@ -14,52 +14,59 @@
         </div>
     </div>
 
-    <div class="user-posts">
-        <h2 class="item-heading"> Posts </h2>
-        <% for _, post in ipairs(posts) do %>
-            <% post = post.node %>
+    <% if user.is_private then %>
+        <div class="item-card">
+            <h3>This user is private.</h3>
+            <a href="<%= view_on_instagram_link %>">View on instagram</a>
+        </div
+    <% elseif #posts < 1 then %>
+        <div class="item-card">
+            <h3>This user has no posts.</h3>
+        </div>
+    <% else %>
+        <div class="user-posts">
+            <h2 class="item-heading"> Posts </h2>
+            <% for _, post in ipairs(posts) do %>
+                <% post = post.node %>
             
-            <div class="item-card post">
-                <div class="user-info">
-                    <img src="<%= proxy_url(post.user.profile_pic_url) %>">
-                    <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
-                </div>
-                <div class="post-image">
-                    <% if type(post.video_versions) == "table" then %>
-                        <% if session.disable_video_proxying then %>
-                            <video controls>
-                                <source crossorigin="anonymous" src="<%= post.video_versions[1].url %>"
-                            </video>
-                        <% else %>
-                            <video controls>
-                                <source src="<%= proxy_url(post.video_versions[1].url) %>">
-                            </video>
-                        <% end %>
-                    <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
-                        <div class="carousel">
-                            <% for _, image in ipairs(post.carousel_media) do %>
-                                <img src="<%= proxy_url(image.image_versions2.candidates[1].url) %>">
+                <div class="item-card post">
+                    <div class="user-info">
+                        <img src="<%= proxy_url(post.user.profile_pic_url) %>">
+                        <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
+                    </div>
+                    <div class="post-image">
+                        <% if type(post.video_versions) == "table" then %>
+                            <% if session.disable_video_proxying then %>
+                                <video controls>
+                                    <source crossorigin="anonymous" src="<%= post.video_versions[1].url %>"
+                                </video>
+                            <% else %>
+                                <video controls>
+                                    <source src="<%= proxy_url(post.video_versions[1].url) %>">
+                                </video>
                             <% end %>
-                        </div>
-                    <% elseif type(post.image_versions2) == "table" then %>
-                        <img src="<%= proxy_url(post.image_versions2.candidates[1].url) %>">
-                    <% end %>
-                </div>
-                <div class="post-info">
-                    <div class="caption">  
-                        <% if type(post.caption) == "table" then %>
-                            <p class="post-caption-text"><%= post.caption.text %></p>
+                        <% elseif type(post.carousel_media_count) ~= "userdata"  and post.carousel_media_count > 0 then %>
+                            <div class="carousel">
+                                <% for _, image in ipairs(post.carousel_media) do %>
+                                    <img src="<%= proxy_url(image.image_versions2.candidates[1].url) %>">
+                                <% end %>
+                            </div>
+                        <% elseif type(post.image_versions2) == "table" then %>
+                            <img src="<%= proxy_url(post.image_versions2.candidates[1].url) %>">
                         <% end %>
                     </div>
+                    <div class="post-info">
+                        <div class="caption">
+                            <% if type(post.caption) == "table" then %>
+                                <p class="post-caption-text"><%= post.caption.text %></p>
+                            <% end %>
+                        </div>
             
+                    </div>
+                    <a href="<%= "/p/" .. post.code %>"> <%= post.comment_count %> Comments</a>
                 </div>
-                <a href="<%= "/p/" .. post.code %>"> <%= post.comment_count %> Comments</a>
-            </div>
         <% end %>
-    </div>
-
-
-
-    <a href="<%= "?after=" .. end_cursor %>" class="next-button">Next Page</a>
-
+        </div>
+        <a href="<%= "?after=" .. end_cursor %>" class="next-button">Next Page</a>
+    <% end %>
 </main>

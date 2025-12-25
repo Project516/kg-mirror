@@ -4,9 +4,9 @@
 <main id="main">
     <div class="item-card post">
         <div class="user-info">
-                <img src="<%= proxy_url(post.owner.profile_pic_url) %>">
-                <a class="username" href="<%= "/" .. post.owner.username %>"> <%= post.owner.username %> </a>
-            </div>
+                <img src="<%= proxy_url(post.user.profile_picture) %>">
+                <a class="username" href="<%= "/" .. post.user.username %>"> <%= post.user.username %> </a>
+        </div>
         <div class="post-image">
             <% if post.video_url then %>
                 <video controls>
@@ -16,25 +16,35 @@
                         <source src="<%= proxy_url(post.video_url) %>">
                     <% end %>
                 </video>
-            <% elseif post.edge_sidecar_to_children then %>
+            <% elseif post.images then %>
                 <div class="carousel">
-                    <% for _, image in ipairs(post.edge_sidecar_to_children.edges) do %>
-                        <img src="<%= proxy_url(image.node.display_resources[1].src) %>">
+                    <% for _, image in ipairs(post.images) do %>
+                        <% if image.video_url then %>
+                            <video controls>
+                                <% if session.disable_video_proxying then %>
+                                    <source crossorigin="anonymous" src="<%= image.video_url %>">
+                                <% else %>
+                                    <source src="<%= proxy_url(image.video_url) %>">
+                                <% end %>
+                            </video>
+                        <% else %>
+                            <img src="<%= proxy_url(image.image_url) %>" alt="<%= image.alt_text %>">
+                        <% end %>
                     <% end %>
                 </div>
-            <% elseif not post.edge_sidecar_to_children and post.display_resources then %>
-                <img src="<%= proxy_url(post.display_resources[1].src) %>">
+            <% elseif not post.images and post.image_url then %>
+                <img src="<%= proxy_url(post.image_url) %>" alt="<%= post.alt_text %>">
             <% else %>
                 <p>Image couldn't be detected.</p>
             <% end %>
         </div>
 
         <div class="post-info">
-            <time class="post-time" datetime="<%= os.date('%Y-%m-%d %H:%M:%S', post.taken_at_timestamp) %>">Posted at: <%=  os.date('%Y-%m-%d %H:%M:%S', post.taken_at_timestamp) %></time>
+            <time class="post-time" datetime="<%= os.date('%Y-%m-%dT%H:%M:%S', post.timestamp) %>">Posted at: <%=  os.date('%Y-%m-%d %H:%M:%S', post.timestamp) %></time>
             <div class="post-body">
                 <div class="caption">
-                    <% if post.edge_media_to_caption and #post.edge_media_to_caption.edges > 0 then %>
-                        <p class="post-caption-text"><%= post.edge_media_to_caption.edges[1].node.text %></p>
+                    <% if post.caption then %>
+                        <p class="post-caption-text"><%= post.caption %></p>
                     <% end %>
                 </div>
                 <h2> Comments </h2>
@@ -57,6 +67,5 @@
                 </div>
             </div>
         </div>
-
-
+    </div>
 </main>

@@ -70,7 +70,7 @@ local function show_post(self)
         end
     else
         self.post = post
-        self.page_title = "A post by " .. post.owner.username
+        self.page_title = "A post by " .. post.user.username
         local comments = get_comments(post.id)
         self.comments = comments
         if self.params.json == "true" and config.allow_json then
@@ -109,7 +109,7 @@ app:get("/:username(/)", function(self)
         self.posts = user.posts
         self.end_cursor = user.end_cursor
         if self.params.json == "true" and config.allow_json then
-            return { json = user }
+            return { json = user.posts }
         end
         self.page_title = "@" .. user.user_info.username .. " | kittygram"
         return { render = "user" }
@@ -172,7 +172,6 @@ app:get("/*", function(self)
     }
     return { status = 404, render  = "error" }
 end)
-
 
 
 return app
