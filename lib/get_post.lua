@@ -41,7 +41,9 @@ local function get_post_graphql(shortcode)
                 message = "Post not found. (Note: this result was cached.)",
                 blob = post
             }
-            redis:set("ig:shortcode:" .. shortcode, json.encode(post_error), "EX", NEGATIVE_EXPIRE_TIME)
+            if redis then
+                redis:set("ig:shortcode:" .. shortcode, json.encode(post_error), "EX", NEGATIVE_EXPIRE_TIME)
+            end
             return post_error
         elseif post.status == "fail" and post.require_login == true then
             return errors.ratelimited{

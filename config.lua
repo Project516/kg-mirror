@@ -40,14 +40,15 @@ config("production", {
 })
 
 -- configurations specific to docker.
+-- this environment also checks for environment variables.
 config("docker", {
-  port = "80",
-  code_cache = "on",
-  num_workers = "4",
-  allow_json = false,
-  resolver = "127.0.0.11",
+  port = os.getenv("PORT") or "80",
+  code_cache = os.getenv("CODE_CACHE") or "on",
+  num_workers = os.getenv("NUM_WORKERS") or "4",
+  allow_json = os.getenv("ALLOW_JSON") == "true" or false,
+  resolver = os.getenv("RESOLVER") or "127.0.0.11",
   redis = {
-    host = "redis",
-    port = 6379,
+    host = os.getenv("REDIS_HOST") or "redis",
+    port = tonumber(os.getenv("REDIS_PORT")) or 6379,
   }
 })
