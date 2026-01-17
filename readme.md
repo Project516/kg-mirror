@@ -53,23 +53,15 @@ git clone https://codeberg.org/irelephant/kittygram.git
 ```
 2. Install [openresty](https://openresty.org/en/installation.html)
 3. Install [redis](https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-redis/) or [valkey](https://valkey.io/topics/installation/)
-4. Install [luarocks](https://luarocks.org/) (likely in your distro's package manager), and install the project's dependencies:
+4. Install [luarocks](https://luarocks.org/) (likely in your distro's package manager), and run:
 ```shell
-# Try running CC="gcc -std=gnu99" if you get some compilation errors. 
-sudo luarocks install lapis
-sudo luarocks install lua-resty-http
-sudo luarocks install htmlparser
-sudo luarocks install lua-cjson
-sudo luarocks install lua-resty-openssl
-sudo luarocks install lsqlite3
-sudo luarocks install lua-resty-redis
-sudo luarocks install lapis-redis
+luarocks init --lua-version=5.1 --lua-versions=5.1
+CC="gcc -std=gnu99" luarocks build
 ```
 5. Run `lapis migrate`
 6. Run `lapis serve production` to run the project.
 
-> [!NOTE]  
-> You may have more luck installing modules locally. That is detailed here: https://github.com/leafo/lapis/issues/777#issuecomment-1900359264     
+   
 
 
 --------
