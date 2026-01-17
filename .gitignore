@@ -9,7 +9,7 @@ client_body_temp/
 *.sqlite
 *.kate-swp
 
-kittygram-dev-1.rockspec
+
 /luarocks
 /lua
 /lua_modules
