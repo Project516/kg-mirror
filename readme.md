@@ -63,7 +63,7 @@ CC="gcc -std=gnu99" luarocks build
 
    
 ## Contact
-Feel free to join the [matrix room](https://matrix.to/#/#kittygram:private.coffee),, or email me at [irelephant@disroot.org](mailto:irelephant@disroot.org)
+Feel free to join the [matrix room](https://matrix.to/#/#kittygram:private.coffee), or email me at [irelephant@disroot.org](mailto:irelephant@disroot.org)
 
 --------
 Kittygram is licensed under the AGPL-3.0.  
