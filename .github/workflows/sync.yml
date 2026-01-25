@@ -1,8 +1,8 @@
-name: Eden
+name: mirror
 
 on:
   schedule:
-    - cron: '0 * * * *'  
+    - cron: '0 0 * * 0'  
   workflow_dispatch:
 
 jobs:
@@ -18,24 +18,13 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Fetch and check out upstream master
+      - name: Fetch and check out upstream main
         run: |
-          git remote add upstream https://git.eden-emu.dev/eden-emu/eden || git remote set-url upstream https://git.eden-emu.dev/eden-emu/eden
+          git remote add upstream https://codeberg.org/irelephant/kittygram || git remote set-url upstream https://codeberg.org/irelephant/kittygram
           git fetch upstream
-          git checkout -B master upstream/master
+          git checkout -B main upstream/main
 
-      - name: Remove .github directory
-        run: |
-          rm -rf .github
-          git rm -r --cached .github || true
-
-      - name: Commit removal (if needed)
-        run: |
-          if ! git diff --cached --quiet; then
-            git commit -m "Remove .github directory to comply with GitHub Actions restrictions"
-          fi
-
-      - name: Force push to GitHub master branch
+      - name: Force push to GitHub main branch
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin master --force
+          git push origin main --force
