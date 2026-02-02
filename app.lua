@@ -117,7 +117,13 @@ app:get("/:username(/)", function(self)
 end)
 
 app:get("/search(/)", function(self)
+    local instagram_url_regex = [[^(?:https?://)?(?:www\.)?instagram\.com/(?:p|reel|[^/]+/(?:p|reel))/([A-Za-z0-9_-]+)/?(?:\?.*)?$]]
     if self.params.q then
+        -- check if a url leads to an instagram post, if so, redirect to that post.
+        local url_match = ngx.re.match(self.params.q, instagram_url_regex, "jo")
+        if url_match and url_match[1] then
+            return { redirect_to = "/p/" .. tostring(url_match[1]) }
+        end
 
         local search_results = search(self.params.q)
         self.page_title = "Search for \"" .. self.params.q .. "\" | kittygram"
